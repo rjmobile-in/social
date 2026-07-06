@@ -184,20 +184,57 @@
   <p class="footer">Stay Connected With RJ Mobile · 📱</p>
   <div id="toast" aria-live="polite"></div>
 
-  <script>
+  <!-- Firebase & Social Tracking Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+
+    // Initialize Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBsAsMlKJqoyOS27IVotwszVvO1ZFCGABs",
+      authDomain: "staff-review-935f3.firebaseapp.com",
+      projectId: "staff-review-935f3",
+      storageBucket: "staff-review-935f3.firebasestorage.app",
+      messagingSenderId: "91819642184",
+      appId: "1:91819642184:web:9b78814e6efcfb811a608d"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
     const urlParams = new URLSearchParams(window.location.search);
     const staffName = urlParams.get('staff') || 'Direct/Unknown';
     let toastTimer;
 
-    // Telegram Logging Engine
-    async function sendTrackingData(platformName) {
-      // Prevents spam logs from double-clicks on a single session
+    // Toast Notification Handler
+    window.showToast = function(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // Dual Tracking Engine: Sends to Telegram & Firebase Firestore
+    window.sendTrackingData = async function(platformName) {
       const storageKey = 'social_tapped_' + platformName.toLowerCase();
       if (localStorage.getItem(storageKey)) {
         console.log("Returning visitor for " + platformName + ". Alert skipped.");
         return; 
       }
 
+      // 1. Log Click to Firebase (For the Analytics Dashboard)
+      try {
+        await addDoc(collection(db, "social_clicks"), {
+          staff_name: staffName,
+          platform: platformName,
+          created_at: serverTimestamp()
+        });
+      } catch (err) {
+        console.error("Firebase logging failed:", err);
+      }
+
+      // 2. Send Alert to Telegram (Your Original Code)
       const botToken = "8917088356:AAEqpcBnEfx9wMo6qdQ7XqLqGi4TmQCqlPY"; 
       const chatId = "-5481061078"; 
       const message = `📱 New Social Media Tap!\n👤 Staff: ${staffName}\n🌐 Platform: ${platformName}`;
@@ -209,16 +246,8 @@
       } catch (err) {}
     }
 
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
-    }
-
-    function openSocial(btn, platform, url) {
-      // Temporarily disable all buttons to prevent spamming opens
+    // Social Button Actions
+    window.openSocial = function(btn, platform, url) {
       const allBtns = document.querySelectorAll('.social-action-btn');
       allBtns.forEach(b => b.disabled = true);
 
@@ -231,12 +260,10 @@
       
       showToast('Opening ' + platform + '...');
       
-      // Send data packet over to Telegram Channel
       sendTrackingData(platform);
       
       setTimeout(() => {
         window.open(url, '_blank', 'noopener,noreferrer');
-        
         setTimeout(() => {
           titleEl.textContent = originalText;
           btn.style.borderColor = '';
@@ -248,3 +275,4 @@
   </script>
 </body>
 </html>
+

@@ -3,193 +3,212 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RJ Mobile — Social Hub</title>
+  <title>RJ Mobile — Social Analytics</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- External Libraries for PDF, Charts, and DatePicker -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --blue: #3B82F6;
-      --blue-hover: #60A5FA;
-      --blue-light: #1a2744;
-      --blue-mid: #1e3060;
-      --surface: #0D1117;
-      --white: #161C27;
-      --border: #2A3347;
-      --muted: #6B7A99;
-      --text: #E8EDF5;
-      --text-soft: #9BAAC4;
+      --blue: #3B82F6; --blue-hover: #60A5FA;
+      --surface: #0D1117; --white: #161C27;
+      --border: #2A3347; --text: #E8EDF5;
+      --text-soft: #9BAAC4; --green: #34D399;
     }
-    
-    html { -webkit-font-smoothing: antialiased; }
-    
     body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: var(--surface);
-      background-image: radial-gradient(ellipse 90% 40% at 50% -5%, rgba(59,130,246,0.12) 0%, transparent 70%);
-      min-height: 100vh;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 52px 16px 64px;
+      font-family: 'Inter', system-ui, sans-serif; background: var(--surface);
+      color: var(--text); min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; padding: 40px 16px;
     }
+    
+    /* Login Screen */
+    #login-screen {
+      background: var(--white); padding: 40px; border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4); text-align: center;
+      width: 100%; max-width: 400px; margin-top: 10vh; border: 1px solid var(--border);
+    }
+    #login-screen .brand-login { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 24px; }
+    #login-screen h2 { font-weight: 800; font-size: 24px; }
+    #login-screen p { color: var(--text-soft); font-size: 14px; margin-bottom: 24px; }
+    .input-field {
+      width: 100%; padding: 14px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text); font-size: 15px; margin-bottom: 12px; outline: none;
+    }
+    .input-field:focus { border-color: var(--blue); }
+    .checkbox-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 20px; font-size: 13px; color: var(--text-soft); cursor: pointer; }
+    #login-btn { width: 100%; padding: 14px; border-radius: 10px; border: none; background: var(--blue); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    #login-btn:hover { background: var(--blue-hover); }
+    #error-msg { color: #EF4444; font-size: 13px; margin-top: 12px; display: none; }
 
-    .header { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-bottom: 36px; text-align: center; }
+    /* Dashboard Layout */
+    #dashboard { display: none; width: 100%; max-width: 1000px; }
+    .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
     
-    .brand  { display: flex; align-items: center; gap: 11px; margin-bottom: 8px; }
-    .logo {
-      width: 46px; height: 46px; background: transparent; border-radius: 13px;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 2px 16px rgba(59,130,246,0.4); overflow: hidden; flex-shrink: 0;
-    }
-    .logo img  { width: 100%; height: 100%; object-fit: contain; }
-    .brand-text { text-align: left; }
-    .brand-text .name { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.6px; line-height: 1; }
-    .brand-text .tag  { font-size: 11px; font-weight: 600; color: var(--blue); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
-    
-    .headline { font-size: clamp(26px, 5vw, 32px); font-weight: 800; color: var(--text); letter-spacing: -0.8px; line-height: 1.15; }
-    .headline em { font-style: normal; color: var(--blue); }
-    .subline { font-size: 14.5px; color: var(--text-soft); line-height: 1.65; max-width: 380px; }
-    
-    .card {
-      background: var(--white); border-radius: 24px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 8px 32px rgba(0,0,0,0.4);
-      width: 100%; max-width: 520px; overflow: hidden;
-      padding: 28px;
-    }
-    
-    .socials-wrap {
-      display: flex; flex-direction: column; gap: 14px;
-    }
-    
-    .social-action-btn {
-      font-family: 'Inter', sans-serif;
-      background: var(--blue-light); border: 1.5px solid rgba(59,130,246,0.15);
-      border-radius: 16px; padding: 18px 20px; width: 100%; cursor: pointer;
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .social-action-btn:hover { background: var(--blue-mid); border-color: rgba(59,130,246,0.4); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
-    .social-action-btn:active { transform: scale(0.98); }
-    .social-action-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-    
-    .social-info { display: flex; align-items: center; gap: 16px; }
-    .social-icon {
-      width: 42px; height: 42px; border-radius: 12px;
-      background: rgba(59,130,246,0.12); display: flex; align-items: center; justify-content: center; color: var(--blue);
-      flex-shrink: 0; transition: background 0.2s, color 0.2s;
-    }
-    
-    .social-action-btn:hover .icon-instagram { background: rgba(225, 48, 108, 0.15); color: #E1306C; }
-    .social-action-btn:hover .icon-youtube { background: rgba(255, 0, 0, 0.15); color: #FF0000; }
-    .social-action-btn:hover .icon-facebook { background: rgba(24, 119, 242, 0.15); color: #1877F2; }
-    .social-action-btn:hover .icon-snapchat { background: rgba(255, 252, 0, 0.15); color: #FFFC00; }
+    .brand-text { display: flex; flex-direction: column; }
+    .brand-text .name { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; line-height: 1.1; }
+    .brand-text .tag { font-size: 12px; font-weight: 600; color: var(--blue-hover); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
 
-    .btn-text-group { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
-    .btn-title { font-size: 16px; font-weight: 600; color: var(--text); }
-    .btn-subtitle { font-size: 13px; color: var(--muted); font-weight: 500; letter-spacing: 0.1px; transition: color 0.2s; }
-    .social-action-btn:hover .btn-subtitle { color: var(--text-soft); }
+    /* Buttons */
+    .header-btns { display: flex; gap: 10px; flex-wrap: wrap;}
+    .btn-secondary { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.2s; }
+    .btn-secondary:hover { border-color: var(--blue); }
+    .btn-primary { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.4); color: var(--blue-hover); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.2s; }
+    .btn-primary:hover { background: var(--blue); color: white; }
 
-    .action-icon { color: var(--muted); transition: color 0.15s; }
-    .social-action-btn:hover .action-icon { color: var(--blue-hover); }
+    /* Metrics & Charts */
+    .metrics-row { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+    .metric-card { flex: 1; min-width: 180px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
+    .metric-title { font-size: 11px; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 6px; }
+    .metric-value { font-size: 20px; font-weight: 800; color: var(--blue-hover); }
     
-    #toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(16px); background: #3B82F6; color: #fff; font-size: 13.5px; font-weight: 500; padding: 12px 24px; border-radius: 100px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease; white-space: nowrap; z-index: 999; box-shadow: 0 4px 20px rgba(59,130,246,0.4); }
-    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    
-    .footer { margin-top: 32px; font-size: 13px; color: var(--muted); text-align: center; line-height: 1.7; font-weight: 500; }
+    .chart-container { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+    .chart-title { font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--text-soft); margin-bottom: 16px; letter-spacing: 0.05em; }
 
-    @media (max-width: 480px) {
-      body { padding: 32px 16px 52px; }
-      .card { padding: 22px; }
-      .social-action-btn { padding: 16px; }
-    }
+    /* Filters */
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; background: var(--white); padding: 16px; border-radius: 12px; border: 1px solid var(--border); }
+    .filter-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 150px; }
+    .filter-group label { font-size: 12px; color: var(--text-soft); font-weight: 600; text-transform: uppercase; }
+    .filter-input { padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 14px; outline: none; font-family: inherit; }
+    .filter-input:focus { border-color: var(--blue); }
+
+    /* Table */
+    .stats-card { background: var(--white); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.2); margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th, td { padding: 16px; border-bottom: 1px solid var(--border); }
+    th { background: rgba(59,130,246,0.1); color: var(--blue-hover); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; }
+    td { font-size: 15px; }
+    tr:last-child td { border-bottom: none; }
+    .empty-row { text-align: center; color: var(--text-soft); font-style: italic; padding: 24px !important; }
+
+    /* Load More */
+    .load-more-container { text-align: center; margin-bottom: 40px; }
+    #load-more-btn { display: none; margin: 0 auto; }
   </style>
 </head>
 <body>
 
-  <header class="header">
-    <div class="brand">
-      <div class="logo"><img src="logo.png" alt="RJ Mobile" onerror="this.style.display='none'" /></div>
+  <!-- Login Overlay -->
+  <div id="login-screen">
+    <div class="brand-login">
+      <h2>RJ Mobile</h2>
+    </div>
+    <p>Social Analytics Portal</p>
+    <input type="email" id="email-input" class="input-field" placeholder="Admin Email" />
+    <input type="password" id="password-input" class="input-field" placeholder="Password" />
+    <label class="checkbox-row">
+      <input type="checkbox" id="remember-me" checked>
+      Keep me logged in
+    </label>
+    <button id="login-btn">Secure Login</button>
+    <div id="error-msg">Authentication failed. Check email and password.</div>
+  </div>
+
+  <!-- Main Dashboard -->
+  <div id="dashboard">
+    <div class="header">
       <div class="brand-text">
         <div class="name">RJ Mobile</div>
-        <div class="tag">Social Links</div>
+        <div class="tag">Social Analytics Dashboard</div>
+      </div>
+      <div class="header-btns">
+        <button id="export-pdf-btn" class="btn-primary">Export PDF</button>
+        <button id="export-csv-btn" class="btn-primary">Export CSV</button>
+        <button id="refresh-btn" class="btn-secondary">Refresh Data</button>
+        <button id="logout-btn" class="btn-secondary">Logout</button>
       </div>
     </div>
-    <h1 class="headline">Connect with <em>Us</em></h1>
-    <p class="subline">Tap a platform below to stay updated with our latest gadgets, tech news, and offers.</p>
-  </header>
 
-  <div class="card">
-    <div class="socials-wrap">
-      
-      <!-- Instagram -->
-      <button class="social-action-btn" data-platform="Instagram" data-url="https://instagram.com/rjmobile.in">
-        <div class="social-info">
-          <div class="social-icon icon-instagram">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-          </div>
-          <div class="btn-text-group">
-            <span class="btn-title">Instagram</span>
-            <span class="btn-subtitle">instagram.com/rjmobile.in</span>
-          </div>
-        </div>
-        <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-      </button>
+    <!-- Quick Stats -->
+    <div class="metrics-row">
+      <div class="metric-card">
+        <div class="metric-title">Filtered Clicks</div>
+        <div class="metric-value" id="metric-total">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">Top Performing Staff</div>
+        <div class="metric-value" id="metric-staff">-</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">Top Platform</div>
+        <div class="metric-value" id="metric-platform">-</div>
+      </div>
+    </div>
 
-      <!-- YouTube -->
-      <button class="social-action-btn" data-platform="YouTube" data-url="https://youtube.com/@rjmobileindia">
-        <div class="social-info">
-          <div class="social-icon icon-youtube">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
-          </div>
-          <div class="btn-text-group">
-            <span class="btn-title">YouTube</span>
-            <span class="btn-subtitle">youtube.com/@rjmobileindia</span>
-          </div>
-        </div>
-        <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-      </button>
+    <!-- Visual Chart -->
+    <div class="chart-container">
+      <div class="chart-title">Clicks by Platform</div>
+      <canvas id="platformChart" style="max-height: 250px;"></canvas>
+    </div>
 
-      <!-- Facebook -->
-      <button class="social-action-btn" data-platform="Facebook" data-url="https://facebook.com/rjmobile.in">
-        <div class="social-info">
-          <div class="social-icon icon-facebook">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3.81l.39-4h-4.2V7a1 1 0 0 1 1-1h3z"></path></svg>
-          </div>
-          <div class="btn-text-group">
-            <span class="btn-title">Facebook</span>
-            <span class="btn-subtitle">facebook.com/rjmobile.in</span>
-          </div>
-        </div>
-        <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-      </button>
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <label>View Mode</label>
+        <select id="view-mode" class="filter-input">
+          <option value="list">Detailed List</option>
+          <option value="platform">Group by Platform</option>
+          <option value="staff">Group by Staff</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Staff Name</label>
+        <input list="staff-options" id="filter-staff" class="filter-input" placeholder="Search staff...">
+        <datalist id="staff-options"></datalist>
+      </div>
+      <div class="filter-group">
+        <label>Platform</label>
+        <select id="filter-platform" class="filter-input">
+          <option value="">All Platforms</option>
+          <option value="Instagram">Instagram</option>
+          <option value="YouTube">YouTube</option>
+          <option value="Facebook">Facebook</option>
+          <option value="Snapchat">Snapchat</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Start Date</label>
+        <input type="text" id="filter-start" class="filter-input" placeholder="dd/mm/yyyy">
+      </div>
+      <div class="filter-group">
+        <label>End Date</label>
+        <input type="text" id="filter-end" class="filter-input" placeholder="dd/mm/yyyy">
+      </div>
+    </div>
+    
+    <!-- Data Table -->
+    <div class="stats-card" id="table-container-for-pdf">
+      <div id="pdf-header" style="display:none; padding:20px 16px; border-bottom: 1px solid #ccc; margin-bottom: 10px;">
+        <h2 style="color:#1e3060; font-family:sans-serif; font-weight:800; margin:0;">RJ Mobile</h2>
+        <p style="color:#666; font-family:sans-serif; margin:4px 0 0 0; font-size:14px;">Social Analytics Report</p>
+      </div>
+      <table>
+        <thead id="table-head"><tr><th>Staff Name</th><th>Platform</th><th>Date & Time</th></tr></thead>
+        <tbody id="table-body">
+          <tr><td colspan="3" class="empty-row">Authenticate to view data...</td></tr>
+        </tbody>
+      </table>
+    </div>
 
-      <!-- Snapchat -->
-      <button class="social-action-btn" data-platform="Snapchat" data-url="https://snapchat.com/add/rjmobileindia">
-        <div class="social-info">
-          <div class="social-icon icon-snapchat">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.99 2.15c-2.43.07-4.14 1.63-4.52 3.96-.13.78.29 1.54 1.05 1.83.65.25 1.26.15 1.7-.27.32-.3.72-.51 1.17-.55.45-.04.9.1 1.26.38.33.26.56.65.59 1.1.03.54-.25 1.04-.73 1.32-.65.37-1.43.43-2.14.15-.65-.25-1.36-.18-1.92.21-.56.4-1.02 1.03-1.19 1.73-.24.97-.04 1.97.55 2.67.59.7 1.45.99 2.31.76.66-.17 1.34-.14 1.98.1.61.23 1.14.63 1.51 1.15.37-.52.9-1.03 1.51-1.15.64-.24 1.32-.27 1.98-.1.86.23 1.72-.06 2.31-.76.59-.7.79-1.7.55-2.67-.17-.7-.63-1.33-1.19-1.73-.56-.39-1.27-.46-1.92-.21-.71.28-1.49.22-2.14-.15-.48-.28-.76-.78-.73-1.32.03-.45.26-.84.59-1.1.36-.28.81-.42 1.26-.38.45.04.85.25 1.17.55.44.42 1.05.52 1.7.27.76-.29 1.18-1.05 1.05-1.83-.38-2.33-2.09-3.89-4.52-3.96z"></path></svg>
-          </div>
-          <div class="btn-text-group">
-            <span class="btn-title">Snapchat</span>
-            <span class="btn-subtitle">snapchat.com/add/rjmobileindia</span>
-          </div>
-        </div>
-        <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-      </button>
-
+    <!-- Pagination -->
+    <div class="load-more-container">
+      <button id="load-more-btn" class="btn-secondary">Load More Data</button>
     </div>
   </div>
 
-  <p class="footer">Stay Connected With RJ Mobile · 📱</p>
-  <div id="toast" aria-live="polite"></div>
-
-  <!-- Firebase Analytics Tracking Logic -->
+  <!-- Firebase & Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, orderBy, query, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
-    // Initialize Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyBsAsMlKJqoyOS27IVotwszVvO1ZFCGABs",
       authDomain: "staff-review-935f3.firebaseapp.com",
@@ -198,78 +217,296 @@
       messagingSenderId: "91819642184",
       appId: "1:91819642184:web:9b78814e6efcfb811a608d"
     };
-    
+
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
+    
+    let allClicksData = [];
+    let chartInstance = null;
+    let lastVisibleDoc = null;
+    let isFetching = false;
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const staffName = urlParams.get('staff') || 'Direct/Unknown';
-    let toastTimer;
+    // Attach Event Listeners to remove inline JS
+    document.getElementById('password-input').addEventListener('keypress', (event) => {
+      if(event.key === 'Enter') document.getElementById('login-btn').click();
+    });
+    document.getElementById('view-mode').addEventListener('change', applyFilters);
+    document.getElementById('filter-staff').addEventListener('input', applyFilters);
+    document.getElementById('filter-platform').addEventListener('change', applyFilters);
+    
+    flatpickr("#filter-start", { dateFormat: "Y-m-d", altInput: true, altFormat: "d/m/Y", onChange: () => applyFilters() });
+    flatpickr("#filter-end", { dateFormat: "Y-m-d", altInput: true, altFormat: "d/m/Y", onChange: () => applyFilters() });
 
-    // Toast Notification Handler
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
-    }
-
-    // Single Tracking Engine: Logs click securely to Firebase Firestore
-    async function sendTrackingData(platformName) {
-      const storageKey = 'social_tapped_' + platformName.toLowerCase();
-      
-      // Keep local storage logic to prevent single users from spamming the analytics DB
-      if (localStorage.getItem(storageKey)) {
-        console.log("Returning visitor for " + platformName + ". Firebase logging skipped to prevent duplicates.");
-        return; 
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        loadStats(false);
+      } else {
+        document.getElementById('login-screen').style.display = 'block';
+        document.getElementById('dashboard').style.display = 'none';
       }
+    });
 
+    document.getElementById('login-btn').addEventListener('click', async () => {
+      const email = document.getElementById('email-input').value;
+      const password = document.getElementById('password-input').value;
+      const remember = document.getElementById('remember-me').checked;
+      const errorMsg = document.getElementById('error-msg');
+      
+      const persistenceType = remember ? browserLocalPersistence : browserSessionPersistence;
+      
       try {
-        await addDoc(collection(db, "social_clicks"), {
-          staff_name: staffName,
-          platform: platformName,
-          created_at: serverTimestamp()
-        });
-        localStorage.setItem(storageKey, 'true');
-      } catch (err) {
-        console.error("Firebase logging failed:", err);
+        errorMsg.style.display = 'none';
+        await setPersistence(auth, persistenceType);
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (error) {
+        errorMsg.style.display = 'block';
+        errorMsg.innerText = error.message; 
+        console.error("Auth Error:", error.message);
+      }
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', () => { signOut(auth); });
+    document.getElementById('refresh-btn').addEventListener('click', () => loadStats(false));
+    document.getElementById('load-more-btn').addEventListener('click', () => loadStats(true));
+
+    async function loadStats(loadMore = false) {
+      if (isFetching) return;
+      isFetching = true;
+
+      const tbody = document.getElementById('table-body');
+      const loadMoreBtn = document.getElementById('load-more-btn');
+      
+      if (!loadMore) {
+        tbody.innerHTML = '<tr><td colspan="3" class="empty-row">Fetching secure data...</td></tr>';
+        allClicksData = [];
+        lastVisibleDoc = null;
+      } else {
+        loadMoreBtn.innerText = 'Loading...';
+        loadMoreBtn.disabled = true;
+      }
+      
+      try {
+        let q;
+        const fetchLimit = 1000;
+        if (loadMore && lastVisibleDoc) {
+          q = query(collection(db, "social_clicks"), orderBy("created_at", "desc"), startAfter(lastVisibleDoc), limit(fetchLimit));
+        } else {
+          q = query(collection(db, "social_clicks"), orderBy("created_at", "desc"), limit(fetchLimit));
+        }
+
+        const snapshot = await getDocs(q);
+        
+        if (!snapshot.empty) {
+          lastVisibleDoc = snapshot.docs[snapshot.docs.length - 1];
+          snapshot.forEach((doc) => { 
+            let itemData = doc.data();
+            if (itemData.staff_name) { itemData.staff_name = itemData.staff_name.replace(/-/g, ' '); }
+            allClicksData.push(itemData); 
+          });
+        }
+
+        if (snapshot.docs.length < fetchLimit) {
+          loadMoreBtn.style.display = 'none';
+        } else {
+          loadMoreBtn.style.display = 'block';
+          loadMoreBtn.innerText = 'Load More Data';
+          loadMoreBtn.disabled = false;
+        }
+
+        populateStaffDropdown(allClicksData);
+        applyFilters(); 
+      } catch (error) {
+        console.error("Error loading stats:", error);
+        if (!loadMore) {
+          tbody.innerHTML = '<tr><td colspan="3" style="color:#EF4444; text-align:center;">Failed to load data. Ensure Firestore Rules are set securely.</td></tr>';
+        }
+      } finally {
+        isFetching = false;
       }
     }
 
-    // Handle button clicks
-    function handleSocialClick(btn, platform, url) {
-      const allBtns = document.querySelectorAll('.social-action-btn');
-      allBtns.forEach(b => b.disabled = true);
-
-      const titleEl = btn.querySelector('.btn-title');
-      const originalText = titleEl.textContent;
-      
-      titleEl.textContent = 'Opening...';
-      btn.style.borderColor = 'rgba(59,130,246,0.6)';
-      btn.style.background = 'var(--blue-mid)';
-      
-      showToast('Opening ' + platform + '...');
-      
-      sendTrackingData(platform);
-      
-      setTimeout(() => {
-        window.open(url, '_blank', 'noopener,noreferrer');
-        setTimeout(() => {
-          titleEl.textContent = originalText;
-          btn.style.borderColor = '';
-          btn.style.background = '';
-          allBtns.forEach(b => b.disabled = false);
-        }, 800);
-      }, 500);
+    function populateStaffDropdown(data) {
+      const uniqueStaff = [...new Set(data.map(item => item.staff_name))].sort();
+      const dataList = document.getElementById('staff-options');
+      dataList.innerHTML = ''; 
+      uniqueStaff.forEach(staff => {
+        if(staff && staff !== 'Direct/Unknown') { 
+          const option = document.createElement('option');
+          option.value = staff;
+          dataList.appendChild(option);
+        }
+      });
     }
 
-    // Bind event listeners to HTML elements
-    document.querySelectorAll('.social-action-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const platform = btn.getAttribute('data-platform');
-        const url = btn.getAttribute('data-url');
-        handleSocialClick(btn, platform, url);
+    function formatToCustomDate(firebaseTimestamp) {
+      if (!firebaseTimestamp) return "N/A";
+      const date = firebaseTimestamp.toDate();
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0'); 
+      const year = date.getFullYear();
+      let hours = date.getHours();
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12; hours = hours ? hours : 12; 
+      return `${day}/${month}/${year}, ${hours}:${minutes} ${ampm}`;
+    }
+
+    function updateDashboardUI(dataArray) {
+      const tbody = document.getElementById('table-body');
+      const thead = document.getElementById('table-head');
+      const mode = document.getElementById('view-mode').value;
+      
+      tbody.innerHTML = ''; 
+      document.getElementById('metric-total').innerText = dataArray.length;
+
+      if (dataArray.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="empty-row">No clicks match your filters.</td></tr>';
+        document.getElementById('metric-staff').innerText = "-";
+        document.getElementById('metric-platform').innerText = "-";
+        updateChart({}); 
+        return;
+      }
+
+      if (mode === 'list') {
+        thead.innerHTML = '<tr><th>Staff Name</th><th>Platform</th><th>Date & Time</th></tr>';
+        dataArray.forEach((data) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `<td><strong>${data.staff_name || "Unknown"}</strong></td><td>${data.platform || "Unknown"}</td><td>${formatToCustomDate(data.created_at)}</td>`;
+          tbody.appendChild(row);
+        });
+      } 
+      else if (mode === 'platform') {
+        thead.innerHTML = '<tr><th>Platform</th><th>Total Clicks</th></tr>';
+        const counts = dataArray.reduce((acc, curr) => {
+          const plat = curr.platform || "Unknown";
+          acc[plat] = (acc[plat] || 0) + 1;
+          return acc;
+        }, {});
+        
+        Object.entries(counts).forEach(([name, count]) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `<td><strong>${name}</strong></td><td>${count}</td>`;
+          tbody.appendChild(row);
+        });
+      }
+      else if (mode === 'staff') {
+        thead.innerHTML = '<tr><th>Staff Name</th><th>Total Clicks</th></tr>';
+        const counts = dataArray.reduce((acc, curr) => {
+          const staff = curr.staff_name || "Unknown";
+          acc[staff] = (acc[staff] || 0) + 1;
+          return acc;
+        }, {});
+        
+        Object.entries(counts).forEach(([name, count]) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `<td><strong>${name}</strong></td><td>${count}</td>`;
+          tbody.appendChild(row);
+        });
+      }
+
+      const staffCounts = {};
+      const platformCounts = {};
+      dataArray.forEach((data) => {
+        if(data.staff_name && data.staff_name !== 'Direct/Unknown') staffCounts[data.staff_name] = (staffCounts[data.staff_name] || 0) + 1;
+        if(data.platform) platformCounts[data.platform] = (platformCounts[data.platform] || 0) + 1;
+      });
+
+      const topStaff = Object.keys(staffCounts).sort((a,b) => staffCounts[b] - staffCounts[a])[0] || "-";
+      const topPlatform = Object.keys(platformCounts).sort((a,b) => platformCounts[b] - platformCounts[a])[0] || "-";
+      
+      document.getElementById('metric-staff').innerText = topStaff;
+      document.getElementById('metric-platform').innerText = topPlatform;
+      
+      updateChart(platformCounts);
+    }
+
+    function updateChart(platformData) {
+      const ctx = document.getElementById('platformChart').getContext('2d');
+      if (chartInstance) { chartInstance.destroy(); }
+      
+      Chart.defaults.color = '#9BAAC4';
+      Chart.defaults.borderColor = '#2A3347';
+
+      chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: Object.keys(platformData),
+          datasets: [{
+            label: 'Total Clicks',
+            data: Object.values(platformData),
+            backgroundColor: '#3B82F6',
+            borderRadius: 6,
+            hoverBackgroundColor: '#60A5FA'
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+        }
+      });
+    }
+
+    function applyFilters() {
+      const staffQuery = document.getElementById('filter-staff').value.toLowerCase();
+      const platformQuery = document.getElementById('filter-platform').value;
+      const startDateQuery = document.getElementById('filter-start').value;
+      const endDateQuery = document.getElementById('filter-end').value;
+
+      const filteredData = allClicksData.filter(item => {
+        let isMatch = true;
+        if (staffQuery && item.staff_name && !item.staff_name.toLowerCase().includes(staffQuery)) isMatch = false;
+        if (platformQuery && item.platform !== platformQuery) isMatch = false;
+        if (item.created_at) {
+          const itemDate = item.created_at.toDate();
+          if (startDateQuery) {
+            if (itemDate < new Date(startDateQuery)) isMatch = false;
+          }
+          if (endDateQuery) {
+            const endDate = new Date(endDateQuery);
+            endDate.setTime(endDate.getTime() + 86400000); 
+            if (itemDate >= endDate) isMatch = false;
+          }
+        }
+        return isMatch;
+      });
+      updateDashboardUI(filteredData);
+    }
+
+    document.getElementById('export-csv-btn').addEventListener('click', () => {
+      let csvContent = "data:text/csv;charset=utf-8,";
+      
+      const headers = Array.from(document.querySelectorAll("#table-head th")).map(th => th.innerText).join(",");
+      csvContent += headers + "\n";
+      
+      document.querySelectorAll("#table-body tr").forEach(row => {
+        const rowData = Array.from(row.cells).map(cell => cell.innerText.replace(/,/g, '')).join(",");
+        csvContent += rowData + "\n";
+      });
+      
+      const link = document.createElement("a");
+      link.setAttribute("href", encodeURI(csvContent));
+      link.setAttribute("download", "RJ_Social_Analytics.csv");
+      document.body.appendChild(link); link.click(); document.body.removeChild(link);
+    });
+
+    document.getElementById('export-pdf-btn').addEventListener('click', () => {
+      const element = document.getElementById('table-container-for-pdf');
+      const pdfHeader = document.getElementById('pdf-header');
+      pdfHeader.style.display = 'block';
+      element.style.background = '#ffffff'; element.style.color = '#000000'; 
+      
+      html2pdf().set({
+        margin: 10, filename: 'RJ_Social_Analytics.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      }).from(element).save().then(() => {
+        pdfHeader.style.display = 'none';
+        element.style.background = 'var(--white)'; element.style.color = 'var(--text)';
       });
     });
   </script>

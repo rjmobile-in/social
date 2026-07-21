@@ -3,203 +3,300 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RJ Mobile — Social Hub</title>
+  <title>RJ Mobile | Connect With Us</title>
+  
+  <script>
+    if (localStorage.getItem('rj_theme') === 'light') { 
+      document.documentElement.classList.add('light-theme'); 
+    }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  
   <style>
+    /* =========================================================
+       1. ROOT VARIABLES & THEME (Slate Palette)
+       ========================================================= */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
     :root {
-      --blue: #3B82F6;
-      --blue-hover: #60A5FA;
-      --blue-light: #1a2744;
-      --blue-mid: #1e3060;
-      --surface: #0D1117;
-      --white: #161C27;
-      --border: #2A3347;
-      --muted: #6B7A99;
-      --text: #E8EDF5;
-      --text-soft: #9BAAC4;
+      /* Dark Theme (Default) */
+      --bg-base: #0f172a; 
+      --card-bg: #1e293b; 
+      --card-border: #334155;
+      
+      --primary: #3b82f6; 
+      --primary-hover: #2563eb; 
+      --primary-alpha: rgba(59, 130, 246, 0.15);
+      
+      --text-main: #f8fafc; 
+      --text-soft: #94a3b8;
+      
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-xl: 24px;
+    }
+
+    html.light-theme {
+      /* Light Theme */
+      --bg-base: #f1f5f9; 
+      --card-bg: #ffffff; 
+      --card-border: #e2e8f0;
+      
+      --primary: #4f46e5; 
+      --primary-hover: #4338ca; 
+      --primary-alpha: rgba(79, 70, 229, 0.1);
+      
+      --text-main: #0f172a; 
+      --text-soft: #64748b; 
+      
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
     }
     
     html { -webkit-font-smoothing: antialiased; }
     
     body {
       font-family: 'Inter', system-ui, sans-serif;
-      background: var(--surface);
-      background-image: radial-gradient(ellipse 90% 40% at 50% -5%, rgba(59,130,246,0.12) 0%, transparent 70%);
+      background: var(--bg-base);
+      color: var(--text-main);
       min-height: 100vh;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 52px 16px 64px;
+      padding: 40px 16px 64px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      position: relative;
     }
 
-    .header { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-bottom: 36px; text-align: center; }
-    
-    .brand  { display: flex; align-items: center; gap: 11px; margin-bottom: 8px; }
-    .logo {
-      width: 46px; height: 46px; background: transparent; border-radius: 13px;
+    h1, h2, h3, .brand-title { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    /* Theme Toggle Button */
+    .theme-toggle-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-soft);
+      width: 40px; height: 40px;
+      border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 2px 16px rgba(59,130,246,0.4); overflow: hidden; flex-shrink: 0;
+      cursor: pointer; transition: all 0.2s;
+      box-shadow: var(--shadow-sm);
     }
-    .logo img  { width: 100%; height: 100%; object-fit: contain; }
-    .brand-text { text-align: left; }
-    .brand-text .name { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.6px; line-height: 1; }
-    .brand-text .tag  { font-size: 11px; font-weight: 600; color: var(--blue); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
+    .theme-toggle-btn:hover { color: var(--primary); border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+    /* =========================================================
+       2. HEADER SECTION
+       ========================================================= */
+    .header { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 32px; text-align: center; }
     
-    .headline { font-size: clamp(26px, 5vw, 32px); font-weight: 800; color: var(--text); letter-spacing: -0.8px; line-height: 1.15; }
-    .headline em { font-style: normal; color: var(--blue); }
-    .subline { font-size: 14.5px; color: var(--text-soft); line-height: 1.65; max-width: 380px; }
-    
-    .card {
-      background: var(--white); border-radius: 24px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 8px 32px rgba(0,0,0,0.4);
-      width: 100%; max-width: 520px; overflow: hidden;
-      padding: 28px;
+    .logo-container {
+      width: 80px; height: 80px; 
+      background: var(--card-bg); 
+      border-radius: var(--radius-lg);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--shadow-md); 
+      border: 1px solid var(--card-border);
+      overflow: hidden; flex-shrink: 0;
+      margin-bottom: 8px;
     }
+    .logo-container img { width: 70%; height: 70%; object-fit: contain; }
     
-    .socials-wrap {
-      display: flex; flex-direction: column; gap: 14px;
+    .headline { font-size: clamp(24px, 6vw, 32px); font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; line-height: 1.2; }
+    .headline em { font-style: normal; color: var(--primary); }
+    .subline { font-size: 15px; color: var(--text-soft); line-height: 1.6; max-width: 400px; font-weight: 500; }
+    
+    /* =========================================================
+       3. LINKS CARD & BUTTONS
+       ========================================================= */
+    .links-card {
+      background: var(--card-bg); 
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-md);
+      width: 100%; max-width: 520px; 
+      padding: 32px;
+      display: flex; flex-direction: column; gap: 16px;
     }
     
     .social-action-btn {
       font-family: 'Inter', sans-serif;
-      background: var(--blue-light); border: 1.5px solid rgba(59,130,246,0.15);
-      border-radius: 16px; padding: 18px 20px; width: 100%; cursor: pointer;
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      background: var(--bg-base); 
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md); 
+      padding: 16px 20px; 
+      width: 100%; 
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: var(--shadow-sm);
     }
-    .social-action-btn:hover { background: var(--blue-mid); border-color: rgba(59,130,246,0.4); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
+    
+    .social-action-btn:hover { 
+        background: var(--card-bg); 
+        border-color: var(--primary); 
+        transform: translateY(-3px); 
+        box-shadow: var(--shadow-md); 
+    }
     .social-action-btn:active { transform: scale(0.98); }
-    .social-action-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .social-action-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; border-color: var(--card-border); }
     
     .social-info { display: flex; align-items: center; gap: 16px; }
     .social-icon {
-      width: 42px; height: 42px; border-radius: 12px;
-      background: rgba(59,130,246,0.12); display: flex; align-items: center; justify-content: center; color: var(--blue);
-      flex-shrink: 0; transition: background 0.2s, color 0.2s;
+      width: 44px; height: 44px; border-radius: var(--radius-sm);
+      background: var(--primary-alpha); 
+      display: flex; align-items: center; justify-content: center; color: var(--primary);
+      flex-shrink: 0; transition: all 0.2s;
     }
     
+    /* Brand-specific Hover Colors */
     .social-action-btn:hover .icon-whatsapp { background: rgba(37, 211, 102, 0.15); color: #25D366; }
     .social-action-btn:hover .icon-instagram { background: rgba(225, 48, 108, 0.15); color: #E1306C; }
     .social-action-btn:hover .icon-youtube { background: rgba(255, 0, 0, 0.15); color: #FF0000; }
     .social-action-btn:hover .icon-facebook { background: rgba(24, 119, 242, 0.15); color: #1877F2; }
     .social-action-btn:hover .icon-snapchat { background: rgba(255, 252, 0, 0.15); color: #FFFC00; }
 
-    .btn-text-group { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
-    .btn-title { font-size: 16px; font-weight: 600; color: var(--text); }
-    .btn-subtitle { font-size: 13px; color: var(--muted); font-weight: 500; letter-spacing: 0.1px; transition: color 0.2s; }
-    .social-action-btn:hover .btn-subtitle { color: var(--text-soft); }
-
-    .action-icon { color: var(--muted); transition: color 0.15s; }
-    .social-action-btn:hover .action-icon { color: var(--blue-hover); }
+    .btn-text-group { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+    .btn-title { font-size: 15px; font-weight: 700; color: var(--text-main); }
+    .btn-subtitle { font-size: 13px; color: var(--text-soft); font-weight: 500; transition: color 0.2s; }
     
-    #toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(16px); background: #3B82F6; color: #fff; font-size: 13.5px; font-weight: 500; padding: 12px 24px; border-radius: 100px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease; white-space: nowrap; z-index: 999; box-shadow: 0 4px 20px rgba(59,130,246,0.4); }
+    .action-icon { color: var(--text-soft); transition: color 0.2s; }
+    .social-action-btn:hover .action-icon { color: var(--primary); }
+    
+    /* =========================================================
+       4. TOAST & FOOTER
+       ========================================================= */
+    #toast { 
+        position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px); 
+        background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); 
+        font-size: 14px; font-weight: 600; padding: 14px 24px; border-radius: var(--radius-lg); 
+        opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
+        white-space: nowrap; z-index: 9999; box-shadow: var(--shadow-md); 
+        display: flex; align-items: center; gap: 8px;
+    }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     
-    .footer { margin-top: 32px; font-size: 13px; color: var(--muted); text-align: center; line-height: 1.7; font-weight: 500; }
+    .footer { margin-top: 40px; font-size: 13px; color: var(--text-soft); text-align: center; font-weight: 600; }
 
     @media (max-width: 480px) {
       body { padding: 32px 16px 52px; }
-      .card { padding: 22px; }
-      .social-action-btn { padding: 16px; }
+      .links-card { padding: 24px; border-radius: var(--radius-lg); }
+      .social-action-btn { padding: 14px 16px; }
+      .theme-toggle-btn { top: 16px; right: 16px; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Theme Toggle -->
+  <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Theme">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+  </button>
+
   <header class="header">
-    <div class="brand">
-      <div class="logo"><img src="logo.png" alt="RJ Mobile" onerror="this.style.display='none'" /></div>
-      <div class="brand-text">
-        <div class="name">RJ Mobile</div>
-        <div class="tag">Social Links</div>
-      </div>
+    <div class="logo-container">
+      <img src="logo.png" alt="RJ Mobile" onerror="this.style.display='none'" />
     </div>
-    <h1 class="headline">Connect with <em>Us</em></h1>
+    <h1 class="headline">Connect with <em class="brand-title">RJ Mobile</em></h1>
     <p class="subline">Tap a platform below to stay updated with our latest gadgets, tech news, and offers.</p>
   </header>
 
-  <div class="card">
-    <div class="socials-wrap">
-
-      <!-- 1. Instagram -->
-      <button class="social-action-btn" data-platform="Instagram" data-url="https://instagram.com/rjmobile.in">
-        <div class="social-info">
-          <div class="social-icon icon-instagram">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-          </div>
-          <div class="btn-text-group">
-            <span class="btn-title">Instagram</span>
-            <span class="btn-subtitle">instagram.com/rjmobile.in</span>
-          </div>
+  <div class="links-card">
+    
+    <!-- 1. Instagram -->
+    <button class="social-action-btn" data-platform="Instagram" data-url="https://instagram.com/rjmobile.in">
+      <div class="social-info">
+        <div class="social-icon icon-instagram">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
         </div>
-        <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-      </button>
-
-      <!-- 2. Facebook -->
-      <button class="social-action-btn" data-platform="Facebook" data-url="https://facebook.com/rjmobile.in">
-        <div class="social-info">
-          <div class="social-icon icon-facebook">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3.81l.39-4h-4.2V7a1 1 0 0 1 1-1h3z"></path></svg>
-          </div>
-          <div class="btn-text-group">
-            <span class="btn-title">Facebook</span>
-            <span class="btn-subtitle">facebook.com/rjmobile.in</span>
-          </div>
+        <div class="btn-text-group">
+          <span class="btn-title">Instagram</span>
+          <span class="btn-subtitle">@rjmobile.in</span>
         </div>
-        <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-      </button>
+      </div>
+      <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+    </button>
 
-      <!-- 3. YouTube -->
-      <button class="social-action-btn" data-platform="YouTube" data-url="https://youtube.com/@rjmobileindia">
-        <div class="social-info">
-          <div class="social-icon icon-youtube">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
-          </div>
-          <div class="btn-text-group">
-            <span class="btn-title">YouTube</span>
-            <span class="btn-subtitle">youtube.com/@rjmobileindia</span>
-          </div>
+    <!-- 2. Facebook -->
+    <button class="social-action-btn" data-platform="Facebook" data-url="https://facebook.com/rjmobile.in">
+      <div class="social-info">
+        <div class="social-icon icon-facebook">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3.81l.39-4h-4.2V7a1 1 0 0 1 1-1h3z"></path></svg>
         </div>
-        <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-      </button>
+        <div class="btn-text-group">
+          <span class="btn-title">Facebook</span>
+          <span class="btn-subtitle">/rjmobile.in</span>
+        </div>
+      </div>
+      <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+    </button>
 
-      <!-- 4. Snapchat -->
-      <button class="social-action-btn" data-platform="Snapchat" data-url="https://snapchat.com/add/rjmobileindia">
-        <div class="social-info">
-          <div class="social-icon icon-snapchat">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.99 2.15c-2.43.07-4.14 1.63-4.52 3.96-.13.78.29 1.54 1.05 1.83.65.25 1.26.15 1.7-.27.32-.3.72-.51 1.17-.55.45-.04.9.1 1.26.38.33.26.56.65.59 1.1.03.54-.25 1.04-.73 1.32-.65.37-1.43.43-2.14.15-.65-.25-1.36-.18-1.92.21-.56.4-1.02 1.03-1.19 1.73-.24.97-.04 1.97.55 2.67.59.7 1.45.99 2.31.76.66-.17 1.34-.14 1.98.1.61.23 1.14.63 1.51 1.15.37-.52.9-1.03 1.51-1.15.64-.24 1.32-.27 1.98-.1.86.23 1.72-.06 2.31-.76.59-.7.79-1.7.55-2.67-.17-.7-.63-1.33-1.19-1.73-.56-.39-1.27-.46-1.92-.21-.71.28-1.49.22-2.14-.15-.48-.28-.76-.78-.73-1.32.03-.45.26-.84.59-1.1.36-.28.81-.42 1.26-.38.45.04.85.25 1.17.55.44.42 1.05.52 1.7.27.76-.29 1.18-1.05 1.05-1.83-.38-2.33-2.09-3.89-4.52-3.96z"></path></svg>
-          </div>
-          <div class="btn-text-group">
-            <span class="btn-title">Snapchat</span>
-            <span class="btn-subtitle">snapchat.com/add/rjmobileindia</span>
-          </div>
+    <!-- 3. YouTube -->
+    <button class="social-action-btn" data-platform="YouTube" data-url="https://youtube.com/@rjmobileindia">
+      <div class="social-info">
+        <div class="social-icon icon-youtube">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
         </div>
-        <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-      </button>
-      
-      <!-- 5. WhatsApp -->
-      <button class="social-action-btn" data-platform="WhatsApp" data-url="https://whatsapp.com/channel/0029VbCYXVB545v1l2Bme81S">
-        <div class="social-info">
-          <div class="social-icon icon-whatsapp">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-            </svg>
-          </div>
-          <div class="btn-text-group">
-            <span class="btn-title">WhatsApp</span>
-            <span class="btn-subtitle">Follow our Channel</span>
-          </div>
+        <div class="btn-text-group">
+          <span class="btn-title">YouTube</span>
+          <span class="btn-subtitle">@rjmobileindia</span>
         </div>
-        <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-      </button>
+      </div>
+      <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+    </button>
 
-    </div>
+    <!-- 4. Snapchat -->
+    <button class="social-action-btn" data-platform="Snapchat" data-url="https://snapchat.com/add/rjmobileindia">
+      <div class="social-info">
+        <div class="social-icon icon-snapchat">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.99 2.15c-2.43.07-4.14 1.63-4.52 3.96-.13.78.29 1.54 1.05 1.83.65.25 1.26.15 1.7-.27.32-.3.72-.51 1.17-.55.45-.04.9.1 1.26.38.33.26.56.65.59 1.1.03.54-.25 1.04-.73 1.32-.65.37-1.43.43-2.14.15-.65-.25-1.36-.18-1.92.21-.56.4-1.02 1.03-1.19 1.73-.24.97-.04 1.97.55 2.67.59.7 1.45.99 2.31.76.66-.17 1.34-.14 1.98.1.61.23 1.14.63 1.51 1.15.37-.52.9-1.03 1.51-1.15.64-.24 1.32-.27 1.98-.1.86.23 1.72-.06 2.31-.76.59-.7.79-1.7.55-2.67-.17-.7-.63-1.33-1.19-1.73-.56-.39-1.27-.46-1.92-.21-.71.28-1.49.22-2.14-.15-.48-.28-.76-.78-.73-1.32.03-.45.26-.84.59-1.1.36-.28.81-.42 1.26-.38.45.04.85.25 1.17.55.44.42 1.05.52 1.7.27.76-.29 1.18-1.05 1.05-1.83-.38-2.33-2.09-3.89-4.52-3.96z"></path></svg>
+        </div>
+        <div class="btn-text-group">
+          <span class="btn-title">Snapchat</span>
+          <span class="btn-subtitle">/add/rjmobileindia</span>
+        </div>
+      </div>
+      <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+    </button>
+    
+    <!-- 5. WhatsApp -->
+    <button class="social-action-btn" data-platform="WhatsApp" data-url="https://whatsapp.com/channel/0029VbCYXVB545v1l2Bme81S">
+      <div class="social-info">
+        <div class="social-icon icon-whatsapp">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+          </svg>
+        </div>
+        <div class="btn-text-group">
+          <span class="btn-title">WhatsApp</span>
+          <span class="btn-subtitle">Follow our Channel</span>
+        </div>
+      </div>
+      <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+    </button>
+
   </div>
 
   <p class="footer">Stay Connected With RJ Mobile · 📱</p>
-  <div id="toast" aria-live="polite"></div>
+  
+  <div id="toast" aria-live="polite">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 12 12 12 8"></polyline><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+      <span id="toast-text"></span>
+  </div>
+
+  <!-- Theme Toggle Logic -->
+  <script>
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      const isLight = document.documentElement.classList.toggle('light-theme');
+      localStorage.setItem('rj_theme', isLight ? 'light' : 'dark');
+    });
+  </script>
 
   <!-- Firebase Analytics Tracking Logic -->
   <script type="module">
@@ -226,7 +323,7 @@
     // Toast Notification Handler
     function showToast(msg) {
       const t = document.getElementById('toast');
-      t.textContent = msg;
+      document.getElementById('toast-text').textContent = msg;
       t.classList.add('show');
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
@@ -262,9 +359,10 @@
       const titleEl = btn.querySelector('.btn-title');
       const originalText = titleEl.textContent;
       
+      // Visual feedback matching the new Slate variables
       titleEl.textContent = 'Opening...';
-      btn.style.borderColor = 'rgba(59,130,246,0.6)';
-      btn.style.background = 'var(--blue-mid)';
+      btn.style.borderColor = 'var(--primary)';
+      btn.style.background = 'var(--primary-alpha)';
       
       showToast('Opening ' + platform + '...');
       

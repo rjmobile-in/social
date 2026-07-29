@@ -157,11 +157,9 @@
     }
     
     /* Brand-specific Hover Colors */
-    .social-action-btn:hover .icon-whatsapp { background: rgba(37, 211, 102, 0.15); color: #25D366; }
     .social-action-btn:hover .icon-instagram { background: rgba(225, 48, 108, 0.15); color: #E1306C; }
-    .social-action-btn:hover .icon-youtube { background: rgba(255, 0, 0, 0.15); color: #FF0000; }
     .social-action-btn:hover .icon-facebook { background: rgba(24, 119, 242, 0.15); color: #1877F2; }
-    .social-action-btn:hover .icon-snapchat { background: rgba(255, 252, 0, 0.15); color: #FFFC00; }
+    .social-action-btn:hover .icon-youtube { background: rgba(255, 0, 0, 0.15); color: #FF0000; }
 
     .btn-text-group { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
     .btn-title { font-size: 15px; font-weight: 700; color: var(--text-main); }
@@ -252,36 +250,6 @@
       <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
     </button>
 
-    <!-- 4. Snapchat -->
-    <button class="social-action-btn" data-platform="Snapchat" data-url="https://snapchat.com/add/rjmobileindia">
-      <div class="social-info">
-        <div class="social-icon icon-snapchat">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.99 2.15c-2.43.07-4.14 1.63-4.52 3.96-.13.78.29 1.54 1.05 1.83.65.25 1.26.15 1.7-.27.32-.3.72-.51 1.17-.55.45-.04.9.1 1.26.38.33.26.56.65.59 1.1.03.54-.25 1.04-.73 1.32-.65.37-1.43.43-2.14.15-.65-.25-1.36-.18-1.92.21-.56.4-1.02 1.03-1.19 1.73-.24.97-.04 1.97.55 2.67.59.7 1.45.99 2.31.76.66-.17 1.34-.14 1.98.1.61.23 1.14.63 1.51 1.15.37-.52.9-1.03 1.51-1.15.64-.24 1.32-.27 1.98-.1.86.23 1.72-.06 2.31-.76.59-.7.79-1.7.55-2.67-.17-.7-.63-1.33-1.19-1.73-.56-.39-1.27-.46-1.92-.21-.71.28-1.49.22-2.14-.15-.48-.28-.76-.78-.73-1.32.03-.45.26-.84.59-1.1.36-.28.81-.42 1.26-.38.45.04.85.25 1.17.55.44.42 1.05.52 1.7.27.76-.29 1.18-1.05 1.05-1.83-.38-2.33-2.09-3.89-4.52-3.96z"></path></svg>
-        </div>
-        <div class="btn-text-group">
-          <span class="btn-title">Snapchat</span>
-          <span class="btn-subtitle">/add/rjmobileindia</span>
-        </div>
-      </div>
-      <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-    </button>
-    
-    <!-- 5. WhatsApp -->
-    <button class="social-action-btn" data-platform="WhatsApp" data-url="https://whatsapp.com/channel/0029VbCYXVB545v1l2Bme81S">
-      <div class="social-info">
-        <div class="social-icon icon-whatsapp">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-          </svg>
-        </div>
-        <div class="btn-text-group">
-          <span class="btn-title">WhatsApp</span>
-          <span class="btn-subtitle">Follow our Channel</span>
-        </div>
-      </div>
-      <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-    </button>
-
   </div>
 
   <p class="footer">Stay Connected With RJ Mobile · 📱</p>
@@ -299,26 +267,18 @@
     });
   </script>
 
-  <!-- Firebase Analytics Tracking Logic -->
+  <!-- Supabase Analytics Tracking Logic -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    // Initialize Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyBsAsMlKJqoyOS27IVotwszVvO1ZFCGABs",
-      authDomain: "staff-review-935f3.firebaseapp.com",
-      projectId: "staff-review-935f3",
-      storageBucket: "staff-review-935f3.firebasestorage.app",
-      messagingSenderId: "91819642184",
-      appId: "1:91819642184:web:9b78814e6efcfb811a608d"
-    };
-    
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    // Replace with your actual Supabase credentials
+    const SUPABASE_URL = 'https://upvhrarcbjfodzvohcpq.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwdmhyYXJjYmpmb2R6dm9oY3BxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQzNTEzMDcsImV4cCI6MjA5OTkyNzMwN30.4kFdGZM2B24jRbHCoZKCd7TbSXRF-3wEWqH2I4V9Fj0';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const urlParams = new URLSearchParams(window.location.search);
-    const staffName = urlParams.get('staff') || 'Direct/Unknown';
+    // Fetch staff_id instead of string name
+    const staffId = urlParams.get('staff_id') || null; 
     let toastTimer;
 
     // Toast Notification Handler
@@ -330,25 +290,24 @@
       toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
     }
 
-    // Single Tracking Engine: Logs click securely to Firebase Firestore
+    // Single Tracking Engine: Logs click securely to Supabase
     async function sendTrackingData(platformName) {
       const storageKey = 'social_tapped_' + platformName.toLowerCase();
       
       // Keep local storage logic to prevent single users from spamming the analytics DB
       if (localStorage.getItem(storageKey)) {
-        console.log("Returning visitor for " + platformName + ". Firebase logging skipped to prevent duplicates.");
+        console.log("Returning visitor for " + platformName + ". Supabase logging skipped to prevent duplicates.");
         return; 
       }
 
       try {
-        await addDoc(collection(db, "social_clicks"), {
-          staff_name: staffName,
-          platform: platformName,
-          created_at: serverTimestamp()
-        });
+        await supabase.from('social_clicks').insert([{
+          staff_id: staffId,         // Ye automatic URL se UUID catch karega
+          platform_id: platformName  // Yahan directly "Instagram", "YouTube", "Facebook" jayega
+        }]);
         localStorage.setItem(storageKey, 'true');
       } catch (err) {
-        console.error("Firebase logging failed:", err);
+        console.error("Supabase logging failed:", err);
       }
     }
 

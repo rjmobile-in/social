@@ -278,7 +278,7 @@
 
     const urlParams = new URLSearchParams(window.location.search);
     // Fetch staff_id instead of string name
-    const staffId = urlParams.get('staff_id') || null; 
+    let staffId = urlParams.get('staff_id') || null; 
     let toastTimer;
 
     // Toast Notification Handler
@@ -301,8 +301,26 @@
       }
 
       try {
+        // --- BACKWARD COMPATIBILITY FOR OLD QRs ---
+        // Agar UUID nahi mila lekin purana 'staff' name URL me hai
+        if (!staffId && urlParams.has('staff')) {
+            const oldName = urlParams.get('staff').replace(/-/g, ' '); // "Rahul-Sharma" -> "Rahul Sharma"
+            
+            // Supabase directory se name search karke UUID nikalo
+            const { data, error } = await supabase
+                .from('staff_directory')
+                .select('id')
+                .ilike('name', oldName) // Case-insensitive match
+                .maybeSingle();
+                
+            if (data && data.id) {
+                staffId = data.id; // UUID ko variable me save kar lo taaki dusre clicks me wapas DB call na ho
+            }
+        }
+        // ------------------------------------------
+
         await supabase.from('social_clicks').insert([{
-          staff_id: staffId,         // Ye automatic URL se UUID catch karega
+          staff_id: staffId,         // Ye automatic URL se UUID catch karega ya purane wale ka resolve karega
           platform_id: platformName  // Yahan directly "Instagram", "YouTube", "Facebook" jayega
         }]);
         localStorage.setItem(storageKey, 'true');

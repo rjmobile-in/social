@@ -302,34 +302,19 @@
 
       try {
         // --- BACKWARD COMPATIBILITY FOR OLD QRs ---
+        // Agar UUID nahi mila lekin purana 'staff' name URL me hai
         if (!staffId && urlParams.has('staff')) {
-            const oldName = urlParams.get('staff').replace(/-/g, ' '); 
-            const unregisteredName = oldName + " (Unregistered)";
+            const oldName = urlParams.get('staff').replace(/-/g, ' '); // "Rahul-Sharma" -> "Rahul Sharma"
             
-            // Step 1: Check karo ki original name YA "(Unregistered)" wala name already hai kya
+            // Supabase directory se name search karke UUID nikalo
             const { data, error } = await supabase
                 .from('staff_directory')
                 .select('id')
-                .or(`name.ilike."${oldName}",name.ilike."${unregisteredName}"`)
+                .ilike('name', oldName) // Case-insensitive match
                 .maybeSingle();
                 
             if (data && data.id) {
-                // Agar original ya unregistered dono mein se koi bhi mil gaya, purana UUID hi use karo
-                staffId = data.id; 
-            } else {
-                // Step 2: Agar dono hi DB mein nahi mile, tabhi naya (Unregistered) entry banao
-                const { data: newData, error: insertError } = await supabase
-                    .from('staff_directory')
-                    .insert([{ name: unregisteredName }])
-                    .select('id')
-                    .maybeSingle();
-                
-                if (newData && newData.id) {
-                    staffId = newData.id;
-                    console.log("New unregistered staff added:", unregisteredName);
-                } else {
-                    console.error("Failed to insert unregistered staff:", insertError);
-                }
+                staffId = data.id; // UUID ko variable me save kar lo taaki dusre clicks me wapas DB call na ho
             }
         }
         // ------------------------------------------

@@ -13,6 +13,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     
     :root {
+      /* Premium Deep Dark Theme */
       --bg-base: #050505; 
       --card-bg: #121212; 
       --card-border: #262626;
@@ -40,7 +41,20 @@
       padding: 35px 16px 50px;
     }
 
-    .header { width: 100%; max-width: 480px; text-align: center; margin-bottom: 28px;}
+    /* Premium Header with Logo */
+    .header { width: 100%; max-width: 480px; text-align: center; margin-bottom: 28px; display: flex; flex-direction: column; align-items: center;}
+    
+    .brand-logo {
+      width: 72px; height: 72px; 
+      object-fit: contain; 
+      margin-bottom: 12px;
+      border-radius: 16px;
+      background: #1a1a1a;
+      padding: 8px;
+      border: 1px solid #333;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15); /* Subtle gold glow */
+    }
+
     h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 28px; margin: 0; letter-spacing: -0.5px;}
     h1 span { 
       background: linear-gradient(90deg, #d4af37, #f3e5ab); 
@@ -50,6 +64,7 @@
     }
     .subtitle { font-size: 14px; color: var(--text-soft); margin-top: 6px; font-weight: 500;}
 
+    /* Main Card */
     .card {
       background: var(--card-bg); 
       border-radius: var(--radius-lg);
@@ -60,6 +75,7 @@
       display: flex; flex-direction: column; gap: 14px;
     }
 
+    /* Select Dropdown */
     .branch-select {
       width: 100%; padding: 16px; border-radius: var(--radius-md);
       background: var(--btn-bg); color: var(--text-main);
@@ -73,6 +89,7 @@
     }
     .branch-select:focus { border-color: #555; }
 
+    /* Action Buttons */
     .action-btn {
       font-family: 'Inter', sans-serif;
       background: var(--btn-bg); 
@@ -86,6 +103,7 @@
     
     .btn-content { display: flex; align-items: center; gap: 14px; }
     
+    /* Brand SVGs */
     .btn-icon {
       width: 42px; height: 42px; border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
@@ -93,6 +111,7 @@
     }
     .btn-icon svg { width: 22px; height: 22px; fill: currentColor; }
     
+    /* Official Brand Colors */
     .icon-map   { background: #F5B400; } 
     .icon-insta { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); } 
     .icon-yt    { background: #FF0000; } 
@@ -105,10 +124,12 @@
     
     .status-icon { color: var(--text-soft); font-weight: 600;}
 
+    /* Done State */
     .action-btn.done { background: var(--success-alpha); border-color: var(--success); }
     .action-btn.done .btn-title, .action-btn.done .btn-subtitle, .action-btn.done .status-icon { color: var(--success); }
     .action-btn.done .btn-icon { background: var(--success); color: #fff; }
 
+    /* Toast */
     #toast { 
       position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); 
       background: #ffffff; color: #000000; 
@@ -123,6 +144,7 @@
 <body>
 
   <div class="header">
+    <img src="logo.png" alt="RJ Mobile" class="brand-logo" onerror="this.style.display='none'" />
     <h1>RJ Mobile <span>VIP Connect</span></h1>
     <div class="subtitle">Select your branch & complete the setup</div>
   </div>
@@ -289,14 +311,12 @@
       showToast('Review Text Copied!');
 
       setTimeout(() => {
-        // _blank forces native App opening or a new tab securely.
         window.open(mapLink, '_blank'); 
       }, 500);
     }
 
     function doAction(btn, url) {
       markDone(btn);
-      // Opens universally supported links directly in Native apps, avoids webview trapping.
       window.open(url, '_blank');
     }
   </script>

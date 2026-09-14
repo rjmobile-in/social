@@ -3,368 +3,302 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RJ Mobile | Connect With Us</title>
-  <link rel="icon" type="image/png" href="logo.png" />
+  <title>RJ Mobile | VIP Connect</title>
   
-  <script>
-    if (localStorage.getItem('rj_theme') === 'light') { 
-      document.documentElement.classList.add('light-theme'); 
-    }
-  </script>
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
   
   <style>
-    /* =========================================================
-       1. ROOT VARIABLES & THEME (Slate Palette)
-       ========================================================= */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     
     :root {
-      /* Dark Theme (Default) */
-      --bg-base: #0f172a; 
-      --card-bg: #1e293b; 
-      --card-border: #334155;
+      --bg-base: #050505; 
+      --card-bg: #121212; 
+      --card-border: #262626;
       
-      --primary: #3b82f6; 
-      --primary-hover: #2563eb; 
-      --primary-alpha: rgba(59, 130, 246, 0.15);
+      --btn-bg: #1a1a1a;
+      --btn-border: #333333;
+      --btn-hover: #222222;
       
-      --text-main: #f8fafc; 
-      --text-soft: #94a3b8;
+      --text-main: #ffffff; 
+      --text-soft: #a1a1aa;
       
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-      --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      --success: #10b981;
+      --success-alpha: rgba(16, 185, 129, 0.15);
       
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 20px;
-      --radius-xl: 24px;
+      --radius-md: 14px;
+      --radius-lg: 24px;
     }
 
-    html.light-theme {
-      /* Light Theme */
-      --bg-base: #f1f5f9; 
-      --card-bg: #ffffff; 
-      --card-border: #e2e8f0;
-      
-      --primary: #4f46e5; 
-      --primary-hover: #4338ca; 
-      --primary-alpha: rgba(79, 70, 229, 0.1);
-      
-      --text-main: #0f172a; 
-      --text-soft: #64748b; 
-      
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-    }
-    
-    html { -webkit-font-smoothing: antialiased; }
-    
     body {
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: 'Inter', sans-serif;
       background: var(--bg-base);
       color: var(--text-main);
       min-height: 100vh;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 40px 16px 64px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      position: relative;
+      display: flex; flex-direction: column; align-items: center; 
+      padding: 35px 16px 50px;
     }
 
-    h1, h2, h3, .brand-title { font-family: 'Plus Jakarta Sans', sans-serif; }
-
-    /* Theme Toggle Button */
-    .theme-toggle-btn {
-      position: absolute;
-      top: 24px;
-      right: 24px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      color: var(--text-soft);
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: all 0.2s;
-      box-shadow: var(--shadow-sm);
+    .header { width: 100%; max-width: 480px; text-align: center; margin-bottom: 28px;}
+    h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 28px; margin: 0; letter-spacing: -0.5px;}
+    h1 span { 
+      background: linear-gradient(90deg, #d4af37, #f3e5ab); 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent; 
+      font-style: normal; 
     }
-    .theme-toggle-btn:hover { color: var(--primary); border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .subtitle { font-size: 14px; color: var(--text-soft); margin-top: 6px; font-weight: 500;}
 
-    /* =========================================================
-       2. HEADER SECTION
-       ========================================================= */
-    .header { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 32px; text-align: center; }
-    
-    .logo-container {
-      width: 80px; height: 80px; 
+    .card {
       background: var(--card-bg); 
       border-radius: var(--radius-lg);
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: var(--shadow-md); 
       border: 1px solid var(--card-border);
-      overflow: hidden; flex-shrink: 0;
-      margin-bottom: 8px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      width: 100%; max-width: 480px; 
+      padding: 24px;
+      display: flex; flex-direction: column; gap: 14px;
     }
-    .logo-container img { width: 70%; height: 70%; object-fit: contain; }
-    
-    .headline { font-size: clamp(24px, 6vw, 32px); font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; line-height: 1.2; }
-    .headline em { font-style: normal; color: var(--primary); }
-    .subline { font-size: 15px; color: var(--text-soft); line-height: 1.6; max-width: 400px; font-weight: 500; }
-    
-    /* =========================================================
-       3. LINKS CARD & BUTTONS
-       ========================================================= */
-    .links-card {
-      background: var(--card-bg); 
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--card-border);
-      box-shadow: var(--shadow-md);
-      width: 100%; max-width: 520px; 
-      padding: 32px;
-      display: flex; flex-direction: column; gap: 16px;
-    }
-    
-    .social-action-btn {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg-base); 
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-md); 
-      padding: 16px 20px; 
-      width: 100%; 
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: space-between; gap: 16px;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: var(--shadow-sm);
-    }
-    
-    .social-action-btn:hover { 
-        background: var(--card-bg); 
-        border-color: var(--primary); 
-        transform: translateY(-3px); 
-        box-shadow: var(--shadow-md); 
-    }
-    .social-action-btn:active { transform: scale(0.98); }
-    .social-action-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; border-color: var(--card-border); }
-    
-    .social-info { display: flex; align-items: center; gap: 16px; }
-    .social-icon {
-      width: 44px; height: 44px; border-radius: var(--radius-sm);
-      background: var(--primary-alpha); 
-      display: flex; align-items: center; justify-content: center; color: var(--primary);
-      flex-shrink: 0; transition: all 0.2s;
-    }
-    
-    /* Brand-specific Hover Colors */
-    .social-action-btn:hover .icon-instagram { background: rgba(225, 48, 108, 0.15); color: #E1306C; }
-    .social-action-btn:hover .icon-facebook { background: rgba(24, 119, 242, 0.15); color: #1877F2; }
-    .social-action-btn:hover .icon-youtube { background: rgba(255, 0, 0, 0.15); color: #FF0000; }
 
-    .btn-text-group { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
-    .btn-title { font-size: 15px; font-weight: 700; color: var(--text-main); }
-    .btn-subtitle { font-size: 13px; color: var(--text-soft); font-weight: 500; transition: color 0.2s; }
+    .branch-select {
+      width: 100%; padding: 16px; border-radius: var(--radius-md);
+      background: var(--btn-bg); color: var(--text-main);
+      border: 1px solid var(--btn-border); font-size: 15px; font-weight: 600;
+      font-family: inherit; outline: none; margin-bottom: 6px;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23a1a1aa%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      background-size: 18px;
+    }
+    .branch-select:focus { border-color: #555; }
+
+    .action-btn {
+      font-family: 'Inter', sans-serif;
+      background: var(--btn-bg); 
+      border: 1px solid var(--btn-border);
+      border-radius: var(--radius-md); 
+      padding: 14px 16px; width: 100%; 
+      cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+    .action-btn:active { transform: scale(0.97); }
     
-    .action-icon { color: var(--text-soft); transition: color 0.2s; }
-    .social-action-btn:hover .action-icon { color: var(--primary); }
+    .btn-content { display: flex; align-items: center; gap: 14px; }
     
-    /* =========================================================
-       4. TOAST & FOOTER
-       ========================================================= */
+    .btn-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: #fff;
+    }
+    .btn-icon svg { width: 22px; height: 22px; fill: currentColor; }
+    
+    .icon-map   { background: #F5B400; } 
+    .icon-insta { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); } 
+    .icon-yt    { background: #FF0000; } 
+    .icon-fb    { background: #1877F2; } 
+    .icon-wa    { background: #25D366; } 
+    
+    .btn-text-group { text-align: left; display: flex; flex-direction: column; gap: 3px;}
+    .btn-title { font-size: 15px; font-weight: 700; color: var(--text-main); letter-spacing: 0.2px;}
+    .btn-subtitle { font-size: 12px; font-weight: 500; color: var(--text-soft);}
+    
+    .status-icon { color: var(--text-soft); font-weight: 600;}
+
+    .action-btn.done { background: var(--success-alpha); border-color: var(--success); }
+    .action-btn.done .btn-title, .action-btn.done .btn-subtitle, .action-btn.done .status-icon { color: var(--success); }
+    .action-btn.done .btn-icon { background: var(--success); color: #fff; }
+
     #toast { 
-        position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px); 
-        background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); 
-        font-size: 14px; font-weight: 600; padding: 14px 24px; border-radius: var(--radius-lg); 
-        opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
-        white-space: nowrap; z-index: 9999; box-shadow: var(--shadow-md); 
-        display: flex; align-items: center; gap: 8px;
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); 
+      background: #ffffff; color: #000000; 
+      font-size: 14px; font-weight: 700; padding: 14px 24px; border-radius: 50px; 
+      opacity: 0; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; z-index: 100; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    
-    .footer { margin-top: 40px; font-size: 13px; color: var(--text-soft); text-align: center; font-weight: 600; }
-
-    @media (max-width: 480px) {
-      body { padding: 32px 16px 52px; }
-      .links-card { padding: 24px; border-radius: var(--radius-lg); }
-      .social-action-btn { padding: 14px 16px; }
-      .theme-toggle-btn { top: 16px; right: 16px; }
-    }
+    .divider { height: 1px; background: var(--card-border); margin: 6px 0; }
   </style>
 </head>
 <body>
 
-  <!-- Theme Toggle -->
-  <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Theme">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-  </button>
+  <div class="header">
+    <h1>RJ Mobile <span>VIP Connect</span></h1>
+    <div class="subtitle">Select your branch & complete the setup</div>
+  </div>
 
-  <header class="header">
-    <div class="logo-container">
-      <img src="logo.png" alt="RJ Mobile" onerror="this.style.display='none'" />
-    </div>
-    <h1 class="headline">Connect with <em class="brand-title">RJ Mobile</em></h1>
-    <p class="subline">Tap a platform below to stay updated with our latest gadgets, tech news, and offers.</p>
-  </header>
-
-  <div class="links-card">
+  <div class="card">
     
-    <!-- 1. Instagram -->
-    <button class="social-action-btn" data-platform="Instagram" data-url="https://instagram.com/rjmobile.in">
-      <div class="social-info">
-        <div class="social-icon icon-instagram">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+    <!-- STEP 1: REVIEW -->
+    <select id="branch-select" class="branch-select">
+      <option value="https://g.page/r/CRDRHW_oEFkqEBM/review">📍 Jhotwara</option>
+      <option value="https://g.page/r/CXJpKGVjH1_xEBM/review">📍 Murlipura, 1 Number</option>
+      <option value="https://g.page/r/CZbxO8pvx8u8EBM/review">📍 Murlipura, 6 Number</option>
+      <option value="https://g.page/r/CQOTwy2wHbcVEBM/review">📍 VKI, 17 Number</option>
+      <option value="https://search.google.com/local/writereview?placeid=ChIJ7wWKoB-zbTkRuoxnfdku9EQ">📍 VKI, Lohamandi</option>
+      <option value="https://g.page/r/CTZC43cDH7SuEBM/review">📍 Shastri Nagar</option>
+    </select>
+
+    <button id="btn-review" class="action-btn" onclick="doReview()">
+      <div class="btn-content">
+        <div class="btn-icon icon-map">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         </div>
         <div class="btn-text-group">
-          <span class="btn-title">Instagram</span>
-          <span class="btn-subtitle">@rjmobile.in</span>
+          <span class="btn-title">Google Maps Review</span>
+          <span class="btn-subtitle">Auto-copy & Open location</span>
         </div>
       </div>
-      <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      <span class="status-icon">➔</span>
     </button>
 
-    <!-- 2. Facebook -->
-    <button class="social-action-btn" data-platform="Facebook" data-url="https://facebook.com/rjmobile.in">
-      <div class="social-info">
-        <div class="social-icon icon-facebook">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3.81l.39-4h-4.2V7a1 1 0 0 1 1-1h3z"></path></svg>
+    <div class="divider"></div>
+
+    <!-- STEP 2: INSTAGRAM 1 -->
+    <button class="action-btn" onclick="doAction(this, 'https://www.instagram.com/reel/DdQTTZQzx81')">
+      <div class="btn-content">
+        <div class="btn-icon icon-insta">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
         </div>
         <div class="btn-text-group">
-          <span class="btn-title">Facebook</span>
-          <span class="btn-subtitle">/rjmobile.in</span>
+          <span class="btn-title">Instagram (rjmobile.in)</span>
+          <span class="btn-subtitle">Follow + Like + Add to Story</span>
         </div>
       </div>
-      <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      <span class="status-icon">➔</span>
     </button>
 
-    <!-- 3. YouTube -->
-    <button class="social-action-btn" data-platform="YouTube" data-url="https://youtube.com/@rjmobileindia">
-      <div class="social-info">
-        <div class="social-icon icon-youtube">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+    <!-- STEP 3: INSTAGRAM 2 -->
+    <button class="action-btn" onclick="doAction(this, 'https://www.instagram.com/reel/DdO2dWQyI7X')">
+      <div class="btn-content">
+        <div class="btn-icon icon-insta">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </div>
+        <div class="btn-text-group">
+          <span class="btn-title">Instagram (rjmobilejaipur)</span>
+          <span class="btn-subtitle">Follow + Like + Add to Story</span>
+        </div>
+      </div>
+      <span class="status-icon">➔</span>
+    </button>
+
+    <!-- STEP 4: YOUTUBE -->
+    <button class="action-btn" onclick="doAction(this, 'https://www.youtube.com/shorts/miBlJn3TOFc')">
+      <div class="btn-content">
+        <div class="btn-icon icon-yt">
+          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
         </div>
         <div class="btn-text-group">
           <span class="btn-title">YouTube</span>
-          <span class="btn-subtitle">@rjmobileindia</span>
+          <span class="btn-subtitle">Subscribe + Like</span>
         </div>
       </div>
-      <svg class="action-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      <span class="status-icon">➔</span>
+    </button>
+
+    <!-- STEP 5: FACEBOOK -->
+    <button class="action-btn" onclick="doAction(this, 'https://www.facebook.com/reel/1764774808127004')">
+      <div class="btn-content">
+        <div class="btn-icon icon-fb">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </div>
+        <div class="btn-text-group">
+          <span class="btn-title">Facebook</span>
+          <span class="btn-subtitle">Follow + Like</span>
+        </div>
+      </div>
+      <span class="status-icon">➔</span>
+    </button>
+
+    <div class="divider"></div>
+
+    <!-- STEP 6: WHATSAPP -->
+    <button class="action-btn" onclick="doAction(this, 'https://whatsapp.com/channel/0029VbCYXVB545v1l2Bme81S')">
+      <div class="btn-content">
+        <div class="btn-icon icon-wa">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.487-1.761-1.663-2.06-.177-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        </div>
+        <div class="btn-text-group">
+          <span class="btn-title">WhatsApp Channel</span>
+          <span class="btn-subtitle">Join for updates & offers</span>
+        </div>
+      </div>
+      <span class="status-icon">➔</span>
     </button>
 
   </div>
 
-  <p class="footer">Stay Connected With RJ Mobile · 📱</p>
-  
-  <div id="toast" aria-live="polite">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 12 12 12 8"></polyline><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-      <span id="toast-text"></span>
-  </div>
+  <div id="toast"></div>
 
-  <!-- Theme Toggle Logic -->
   <script>
-    document.getElementById('theme-toggle').addEventListener('click', () => {
-      const isLight = document.documentElement.classList.toggle('light-theme');
-      localStorage.setItem('rj_theme', isLight ? 'light' : 'dark');
-    });
-  </script>
+    const emojis = ['🔥','📱','😍','👍','🙌','⭐','😊','💯'];
+    const reviewsData = {
+      intros: ["rj mobile ki dukan ek number h","{loc} ki sabse top mobile shop","showroom mast saja rakha h in logo ne","best mobile shop h {loc} area me","yaha aake alag hi maza aata h","bhaiya ki shop kafi badiya h"],
+      middles: ["staff bahut polite h","customer service ekdam zordar lgi","bhaiya ne sab kuch pyar se samjhaya","purane phone ka data copy kar diya easily","team kafi friendly h yaha ki","sab log ache se baat karte h"],
+      pricing: ["deals sabse best milti h idhar","rate market me sabse saste h","online se bhi kam price me pad gya","exchange value achi lagayi bhaiya ne","emi aasan h aur jaldi ho gyi","budget me badiya phone dila diya"],
+      endings: ["sath me free cover glass bhi de diya","gifts dene me kanjoosi ni karte","earphones bhi free me diye","mujhe kafi extra saman de diya sath","bina mange hi free accessories laga di"],
+      bonuses: ["sbko 100% recommend karunga","jarur aana bhai logo yaha","mai to hamesha yahi se lunga ab","ekdam paisa vasool jagah h","phone lene ke liye sabse best shop h"]
+    };
 
-  <!-- Supabase Analytics Tracking Logic -->
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    function pickReview(branchName) {
+      const loc = branchName.split(',')[0].trim();
+      let intro = reviewsData.intros[Math.floor(Math.random() * reviewsData.intros.length)].replace(/\{loc\}/g, loc);
+      let mid = reviewsData.middles[Math.floor(Math.random() * reviewsData.middles.length)];
+      let price = reviewsData.pricing[Math.floor(Math.random() * reviewsData.pricing.length)];
+      let end = reviewsData.endings[Math.floor(Math.random() * reviewsData.endings.length)];
+      let bonus = reviewsData.bonuses[Math.floor(Math.random() * reviewsData.bonuses.length)];
+      
+      let text = [intro, mid, price, end, bonus].join(" ").toLowerCase(); 
+      text += " " + emojis[Math.floor(Math.random()*emojis.length)] + emojis[Math.floor(Math.random()*emojis.length)];
+      return text;
+    }
 
-    // Replace with your actual Supabase credentials
-    const SUPABASE_URL = 'https://upvhrarcbjfodzvohcpq.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwdmhyYXJjYmpmb2R6dm9oY3BxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQzNTEzMDcsImV4cCI6MjA5OTkyNzMwN30.4kFdGZM2B24jRbHCoZKCd7TbSXRF-3wEWqH2I4V9Fj0';
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    const urlParams = new URLSearchParams(window.location.search);
-    // Fetch staff_id instead of string name
-    let staffId = urlParams.get('staff_id') || null; 
-    let toastTimer;
-
-    // Toast Notification Handler
     function showToast(msg) {
       const t = document.getElementById('toast');
-      document.getElementById('toast-text').textContent = msg;
+      t.textContent = msg;
       t.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+      setTimeout(() => t.classList.remove('show'), 2500);
     }
 
-    // Single Tracking Engine: Logs click securely to Supabase
-    async function sendTrackingData(platformName) {
-      const storageKey = 'social_tapped_' + platformName.toLowerCase();
-      
-      // Keep local storage logic to prevent single users from spamming the analytics DB
-      if (localStorage.getItem(storageKey)) {
-        console.log("Returning visitor for " + platformName + ". Supabase logging skipped to prevent duplicates.");
-        return; 
+    function markDone(btn) {
+      btn.classList.add('done');
+      const titleSpan = btn.querySelector('.btn-title');
+      const iconSpan = btn.querySelector('.status-icon');
+      if(!titleSpan.innerHTML.includes('✓')) {
+        titleSpan.innerHTML = '✓ ' + titleSpan.innerHTML;
       }
-
-      try {
-        // --- BACKWARD COMPATIBILITY FOR OLD QRs ---
-        // Agar UUID nahi mila lekin purana 'staff' name URL me hai
-        if (!staffId && urlParams.has('staff')) {
-            const oldName = urlParams.get('staff').replace(/-/g, ' '); // "Rahul-Sharma" -> "Rahul Sharma"
-            
-            // Supabase directory se name search karke UUID nikalo
-            const { data, error } = await supabase
-                .from('staff_directory')
-                .select('id')
-                .ilike('name', oldName) // Case-insensitive match
-                .maybeSingle();
-                
-            if (data && data.id) {
-                staffId = data.id; // UUID ko variable me save kar lo taaki dusre clicks me wapas DB call na ho
-            }
-        }
-        // ------------------------------------------
-
-        await supabase.from('social_clicks').insert([{
-          staff_id: staffId,         // Ye automatic URL se UUID catch karega ya purane wale ka resolve karega
-          platform_id: platformName  // Yahan directly "Instagram", "YouTube", "Facebook" jayega
-        }]);
-        localStorage.setItem(storageKey, 'true');
-      } catch (err) {
-        console.error("Supabase logging failed:", err);
-      }
+      iconSpan.textContent = '✓';
     }
 
-    // Handle button clicks
-    function handleSocialClick(btn, platform, url) {
-      const allBtns = document.querySelectorAll('.social-action-btn');
-      allBtns.forEach(b => b.disabled = true);
+    function doReview() {
+      const btn = document.getElementById('btn-review');
+      const select = document.getElementById('branch-select');
+      const branchName = select.options[select.selectedIndex].text.replace('📍 ', '');
+      const mapLink = select.value;
+      
+      const text = pickReview(branchName);
 
-      const titleEl = btn.querySelector('.btn-title');
-      const originalText = titleEl.textContent;
-      
-      // Visual feedback matching the new Slate variables
-      titleEl.textContent = 'Opening...';
-      btn.style.borderColor = 'var(--primary)';
-      btn.style.background = 'var(--primary-alpha)';
-      
-      showToast('Opening ' + platform + '...');
-      
-      sendTrackingData(platform);
-      
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+
+      markDone(btn);
+      showToast('Review Text Copied!');
+
       setTimeout(() => {
-        window.open(url, '_blank', 'noopener,noreferrer');
-        setTimeout(() => {
-          titleEl.textContent = originalText;
-          btn.style.borderColor = '';
-          btn.style.background = '';
-          allBtns.forEach(b => b.disabled = false);
-        }, 800);
+        // _blank forces native App opening or a new tab securely.
+        window.open(mapLink, '_blank'); 
       }, 500);
     }
 
-    // Bind event listeners to HTML elements
-    document.querySelectorAll('.social-action-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const platform = btn.getAttribute('data-platform');
-        const url = btn.getAttribute('data-url');
-        handleSocialClick(btn, platform, url);
-      });
-    });
+    function doAction(btn, url) {
+      markDone(btn);
+      // Opens universally supported links directly in Native apps, avoids webview trapping.
+      window.open(url, '_blank');
+    }
   </script>
 </body>
 </html>

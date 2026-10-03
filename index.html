@@ -136,7 +136,10 @@
     <select id="branch-select" class="branch-select">
       <option value="https://g.page/r/CRDRHW_oEFkqEBM/review" data-branch="jhotwara">📍 Jhotwara</option>
       <option value="https://g.page/r/CXJpKGVjH1_xEBM/review" data-branch="murlipura1">📍 Murlipura, 1 Number</option>
-      <option value="https://g.page/r/CZbxO8pvx8u8EBM/review" data-branch="murlipura6">📍 Murlipura, 6 Number</option>
+      
+      <!-- UPDATED: VKI 6 -->
+      <option value="https://g.page/r/CZbxO8pvx8u8EBM/review" data-branch="vki6">📍 VKI, 6 Number</option>
+      
       <option value="https://g.page/r/CQOTwy2wHbcVEBM/review" data-branch="vki17">📍 VKI, 17 Number</option>
       <option value="https://search.google.com/local/writereview?placeid=ChIJ7wWKoB-zbTkRuoxnfdku9EQ" data-branch="vkilohamandi">📍 VKI, Lohamandi</option>
       <option value="https://g.page/r/CTZC43cDH7SuEBM/review" data-branch="shastrinagar">📍 Shastri Nagar</option>
@@ -234,45 +237,57 @@
   <div id="toast"></div>
 
   <script>
-    // --- 1. SUPABASE SETUP (YAHAN APNI DETAILS DAALNA) ---
-    const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
-    const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // --- 1. SAFE SUPABASE SETUP ---
+    const SUPABASE_URL = 'https://kngchiisfcezqmrptvvt.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtuZ2NoaWlzZmNlenFtcnB0dnZ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk1MzEwMjMsImV4cCI6MjEwNTEwNzAyM30.8NBI8yaNADciacAQsF18WYUbvRkSxZa7fNthhqT9MVQ';
+    
+    let supabase = null;
+    try {
+      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } catch (e) {
+      console.error("Supabase Initialization Error:", e);
+    }
 
     // --- 2. GET USER IP ---
     let userIP = 'unknown';
     fetch('https://api.ipify.org?format=json')
       .then(response => response.json())
       .then(data => { userIP = data.ip; })
-      .catch(e => console.error("Could not fetch IP:", e));
+      .catch(e => console.error("Could not fetch IP (Adblocker?):", e));
 
     // --- 3. DATABASE LOG FUNCTION ---
     async function logToDB(actionName) {
-      if(userIP === 'unknown') return; 
+      if(userIP === 'unknown' || !supabase) return; // Skip without breaking UI
       
-      // Ye function IP + Action bhejega. Agar DB me pehle se hua, to kuch nahi karega (no error, link khul jayega).
-      const { error } = await supabase.rpc('log_frontend_action', {
-        p_ip: userIP,
-        p_action: actionName
-      });
+      try {
+        const { error } = await supabase.rpc('log_frontend_action', {
+          p_ip: userIP,
+          p_action: actionName
+        });
+        if(error) console.log("DB Note:", error.message);
+      } catch (err) {
+        console.error("DB Log failed:", err);
+      }
     }
 
     // --- URL PARAMETER LOGIC ---
     window.addEventListener("DOMContentLoaded", () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const branchParam = urlParams.get('branch');
-      
-      if (branchParam) {
-        const select = document.getElementById('branch-select');
-        const searchBranch = branchParam.toLowerCase().trim();
-        for (let i = 0; i < select.options.length; i++) {
-          if (select.options[i].getAttribute('data-branch') === searchBranch || 
-              select.options[i].text.toLowerCase().includes(searchBranch)) {
-            select.selectedIndex = i;
-            break;
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const branchParam = urlParams.get('branch');
+        
+        if (branchParam) {
+          const select = document.getElementById('branch-select');
+          const searchBranch = branchParam.toLowerCase().trim();
+          for (let i = 0; i < select.options.length; i++) {
+            if (select.options[i].getAttribute('data-branch') === searchBranch || 
+                select.options[i].text.toLowerCase().includes(searchBranch)) {
+              select.selectedIndex = i;
+              break;
+            }
           }
         }
-      }
+      } catch(e) { console.error("URL Param Error:", e); }
     });
 
     // --- REVIEWS LOGIC ---
@@ -306,13 +321,15 @@
     }
 
     function markDone(btn) {
-      btn.classList.add('done');
-      const titleSpan = btn.querySelector('.btn-title');
-      const iconSpan = btn.querySelector('.status-icon');
-      if(!titleSpan.innerHTML.includes('✓')) {
-        titleSpan.innerHTML = '✓ ' + titleSpan.innerHTML;
-      }
-      iconSpan.textContent = '✓';
+      try {
+        btn.classList.add('done');
+        const titleSpan = btn.querySelector('.btn-title');
+        const iconSpan = btn.querySelector('.status-icon');
+        if(!titleSpan.innerHTML.includes('✓')) {
+          titleSpan.innerHTML = '✓ ' + titleSpan.innerHTML;
+        }
+        iconSpan.textContent = '✓';
+      } catch (e) {}
     }
 
     function doReview() {
@@ -326,15 +343,20 @@
 
       const text = pickReview(branchName);
 
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
+      // Safe copy logic
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('Review Text Copied!');
+      } catch(e) {
+        console.error("Copy failed", e);
+      }
 
       markDone(btn);
-      showToast('Review Text Copied!');
 
       setTimeout(() => {
         window.open(mapLink, '_blank'); 

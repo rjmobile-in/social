@@ -16,7 +16,7 @@
       --radius-md: 14px; --radius-lg: 24px;
     }
     body {
-      font-family: 'Inter', sans-serif; background: var(--bg-base); color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg-base); color: var(--text-main);
       min-height: 100vh; display: flex; flex-direction: column; align-items: center;
       padding: 35px 16px 50px;
     }
@@ -26,7 +26,7 @@
       background: #1a1a1a; padding: 8px; border: 1px solid #333; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
     }
     h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 28px; letter-spacing: -0.5px; }
-    h1 span { background: linear-gradient(90deg, #d4af37, #f3e5ab); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h1 span { background: linear-gradient(90deg, #d4af37, #f3e5ab); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
     .subtitle { font-size: 14px; color: var(--text-soft); margin-top: 6px; font-weight: 500; }
     .card {
       background: var(--card-bg); border-radius: var(--radius-lg); border: 1px solid var(--card-border);
@@ -34,9 +34,9 @@
       display: flex; flex-direction: column; gap: 14px;
     }
     .branch-select {
-      width: 100%; padding: 16px; border-radius: var(--radius-md); background: var(--btn-bg); color: var(--text-main);
-      border: 1px solid var(--btn-border); font-size: 15px; font-weight: 600; font-family: inherit; outline: none; margin-bottom: 6px;
-      appearance: none;
+      width: 100%; padding: 16px; border-radius: var(--radius-md); background-color: var(--btn-bg); color: var(--text-main);
+      border: 1px solid var(--btn-border); font-size: 16px; font-weight: 600; font-family: inherit; outline: none; margin-bottom: 6px;
+      -webkit-appearance: none; appearance: none;
       background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23a1a1aa%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
       background-repeat: no-repeat; background-position: right 16px center; background-size: 18px;
     }
@@ -64,9 +64,19 @@
       position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
       background: #ffffff; color: #000000; font-size: 14px; font-weight: 700; padding: 14px 24px; border-radius: 50px;
       opacity: 0; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; z-index: 100; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      max-width: calc(100vw - 32px); text-align: center;
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .divider { height: 1px; background: var(--card-border); margin: 6px 0; }
+    .progress { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 600; color: var(--text-soft); }
+    .bar { flex: 1; height: 6px; background: var(--btn-border); border-radius: 6px; overflow: hidden; }
+    .bar i { display: block; height: 100%; width: 0; background: var(--success); transition: width 0.3s; }
+    .tools { display: flex; justify-content: flex-end; }
+    .link-btn { background: none; border: 0; color: var(--text-soft); font: inherit; font-size: 12px; text-decoration: underline; cursor: pointer; padding: 4px 0; }
+    #manual { display: none; flex-direction: column; gap: 10px; background: var(--btn-bg); border: 1px solid var(--btn-border); border-radius: var(--radius-md); padding: 14px; }
+    #manual p { font-size: 12px; color: var(--text-soft); line-height: 1.5; }
+    #manual textarea { width: 100%; min-height: 96px; background: #0d0d0d; color: var(--text-main); border: 1px solid var(--btn-border); border-radius: 10px; padding: 10px; font: inherit; font-size: 16px; resize: none; }
+    #manual button { background: #F5B400; color: #000; border: 0; border-radius: 10px; padding: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -78,16 +88,24 @@
   </div>
 
   <div class="card">
-    <select id="branch-select" class="branch-select">
+    <div class="progress">
+      <span id="prog-text">0/0 done</span>
+      <div class="bar"><i id="prog-bar"></i></div>
+    </div>
+
+    <select id="branch-select" class="branch-select" aria-label="Branch">
       <option value="https://g.page/r/CRDRHW_oEFkqEBM/review" data-branch="jhotwara">📍 Jhotwara</option>
       <option value="https://g.page/r/CXJpKGVjH1_xEBM/review" data-branch="murlipura1">📍 Murlipura, 1 Number</option>
       <option value="https://g.page/r/CZbxO8pvx8u8EBM/review" data-branch="vki6">📍 VKI, 6 Number</option>
       <option value="https://g.page/r/CQOTwy2wHbcVEBM/review" data-branch="vki17">📍 VKI, 17 Number</option>
       <option value="https://search.google.com/local/writereview?placeid=ChIJ7wWKoB-zbTkRuoxnfdku9EQ" data-branch="vkilohamandi">📍 VKI, Lohamandi</option>
       <option value="https://g.page/r/CTZC43cDH7SuEBM/review" data-branch="shastrinagar">📍 Shastri Nagar</option>
+      <!-- TODO: Rajgarh ka REVIEW link yaha daalo (g.page/r/.../review ya writereview?placeid=...).
+           Abhi ka maps.app.goo.gl link sirf place page kholta h, seedha review box nahi. -->
+      <option value="https://maps.app.goo.gl/Vxa5V371Q4f2Zvrn8" data-branch="rajgarh">📍 Rajgarh</option>
     </select>
 
-    <a id="btn-review" href="https://g.page/r/CRDRHW_oEFkqEBM/review" target="_blank" class="action-btn" onclick="doReview(this)">
+    <a id="btn-review" data-key="review" data-title="Google Maps Review" href="https://g.page/r/CRDRHW_oEFkqEBM/review" class="action-btn">
       <div class="btn-content">
         <div class="btn-icon icon-map"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
         <div class="btn-text-group">
@@ -98,8 +116,16 @@
       <span class="status-icon">➔</span>
     </a>
 
+    <div id="manual">
+      <p>Auto-copy nahi ho paya. Neeche ka text dabake copy karo, fir "Maps kholo" dabao.</p>
+      <textarea id="manual-text" readonly></textarea>
+      <button type="button" id="manual-go">Maps kholo</button>
+    </div>
+
     <div class="divider"></div>
     <div id="social-list" style="display:contents"></div>
+
+    <div class="tools"><button type="button" class="link-btn" id="reset-btn">Reset progress</button></div>
   </div>
 
   <div id="toast"></div>
@@ -108,7 +134,7 @@
     /* ============ ACCOUNTS ============
        Main: "RJ Mobile" | City: "RJ Mobile - {City}"
        Churu / Rajgarh handles are assumed - change if different. */
-    const MAIN = { name: 'RJ Mobile', ig: 'rjmobile.in', fb: 'rjmobile.in' };
+    const MAIN = { id: 'main', name: 'RJ Mobile', ig: 'rjmobile.in', fb: 'rjmobile.in' };
     const CITIES = [
       { id: 'jaipur',  name: 'RJ Mobile - Jaipur',  ig: 'rjmobile.jaipur',  fb: 'rjmobile.jaipur' },
       { id: 'churu',   name: 'RJ Mobile - Churu',   ig: 'rjmobile.churu',   fb: 'rjmobile.churu' },
@@ -136,8 +162,31 @@
     const activeCities = showAll ? CITIES : CITIES.filter(c => cityList.includes(c.id));
     const accounts = [MAIN, ...activeCities];
 
-    function btn(platform, href, title, sub) {
-      return `<a href="${href}" target="_blank" rel="noopener" class="action-btn" onclick="doAction(this)">
+    /* ============ SAVED STATE (localStorage, safe) ============ */
+    const STORE_KEY = 'rjmobile_vip_done_v1';
+    function loadDone() {
+      try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch (e) { return {}; }
+    }
+    function saveDone(obj) {
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(obj)); } catch (e) {}
+    }
+    let doneState = loadDone();
+
+    /* ============ APP-FRIENDLY LINKS ============
+       Android: intent:// link seedha main app (Instagram / Facebook / WhatsApp) kholta h.
+       Agar wo app installed nahi (ya sirf Lite / Business h) to browser_fallback_url (normal web link) khulta h,
+       "install karo" wala page nahi aata. iPhone / desktop: normal https link. */
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    function androidIntent(hostPath, pkg, fallback) {
+      return 'intent://' + hostPath + '#Intent;scheme=https;package=' + pkg +
+             ';S.browser_fallback_url=' + encodeURIComponent(fallback) + ';end';
+    }
+
+    function btn(key, platform, webHref, appHref, title, sub) {
+      const useApp = isAndroid && appHref;
+      const href = useApp ? appHref : webHref;
+      const target = useApp ? '' : ' target="_blank" rel="noopener"';
+      return `<a href="${href}"${target} class="action-btn" data-key="${key}" data-title="${title}">
         <div class="btn-content">
           <div class="btn-icon icon-${platform === 'ig' ? 'insta' : platform}"><svg viewBox="0 0 24 24">${ICONS[platform]}</svg></div>
           <div class="btn-text-group"><span class="btn-title">${title}</span><span class="btn-subtitle">${sub}</span></div>
@@ -146,33 +195,63 @@
 
     function renderSocial() {
       let h = '';
-      accounts.forEach(a => h += btn('ig', `https://www.instagram.com/${a.ig}/reels/`, `Instagram · ${a.name}`, `@${a.ig} · Follow + Like + Add to Story`));
-      h += btn('yt', YT_URL, 'YouTube', 'Subscribe + Like');
-      accounts.forEach(a => h += btn('fb', `https://www.facebook.com/${a.fb}/`, `Facebook · ${a.name}`, 'Follow + Like'));
+      accounts.forEach(a => {
+        const web = `https://www.instagram.com/${a.ig}/`;
+        h += btn('ig:' + a.id, 'ig', web, androidIntent('instagram.com/_u/' + a.ig, 'com.instagram.android', web),
+                 `Instagram · ${a.name}`, `@${a.ig} · Follow + Like + Add to Story`);
+      });
+      h += btn('yt', 'yt', YT_URL, null, 'YouTube', 'Subscribe + Like');
+      accounts.forEach(a => {
+        const web = `https://www.facebook.com/${a.fb}/`;
+        h += btn('fb:' + a.id, 'fb', web, androidIntent('www.facebook.com/' + a.fb, 'com.facebook.katana', web),
+                 `Facebook · ${a.name}`, 'Follow + Like');
+      });
       h += '<div class="divider"></div>';
-      h += btn('wa', WA_URL, 'WhatsApp Channel', 'Join for updates & offers');
+      h += btn('wa', 'wa', WA_URL, androidIntent('whatsapp.com/channel/0029VbCYXVB545v1l2Bme81S', 'com.whatsapp', WA_URL),
+               'WhatsApp Channel', 'Join for updates & offers');
       document.getElementById('social-list').innerHTML = h;
+
+      document.querySelectorAll('#social-list a.action-btn').forEach(el => {
+        el.addEventListener('click', () => setDone(el, true));
+      });
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      renderSocial();
-      const select = document.getElementById('branch-select');
-      const reviewBtn = document.getElementById('btn-review');
-      select.addEventListener('change', e => { reviewBtn.href = e.target.value; });
-      const bp = (params.get('branch') || '').toLowerCase().trim();
-      if (bp) {
-        for (let i = 0; i < select.options.length; i++) {
-          if (select.options[i].dataset.branch === bp || select.options[i].text.toLowerCase().includes(bp)) {
-            select.selectedIndex = i; reviewBtn.href = select.value; break;
-          }
-        }
-      }
-    });
+    /* ============ DONE + PROGRESS ============ */
+    function allButtons() { return document.querySelectorAll('a.action-btn[data-key]'); }
+
+    function paintDone(el, on) {
+      const title = el.querySelector('.btn-title');
+      el.classList.toggle('done', on);
+      title.textContent = (on ? '✓ ' : '') + el.dataset.title;
+      el.querySelector('.status-icon').textContent = on ? '✓' : '➔';
+    }
+
+    function updateProgress() {
+      const els = allButtons();
+      let n = 0;
+      els.forEach(el => { if (doneState[el.dataset.key]) n++; });
+      document.getElementById('prog-text').textContent = n + '/' + els.length + ' done';
+      document.getElementById('prog-bar').style.width = (els.length ? (n / els.length) * 100 : 0) + '%';
+      return { n, total: els.length };
+    }
+
+    function setDone(el, on) {
+      doneState[el.dataset.key] = on;
+      if (!on) delete doneState[el.dataset.key];
+      saveDone(doneState);
+      paintDone(el, on);
+      const p = updateProgress();
+      if (on && p.total && p.n === p.total) showToast('Sab complete! Thank you 🎉');
+    }
+
+    function restoreDone() {
+      allButtons().forEach(el => paintDone(el, !!doneState[el.dataset.key]));
+      updateProgress();
+    }
 
     /* ============ REVIEW GENERATOR ============
        Builds a different, natural Hinglish review each tap: random opener +
-       2-3 mixed points + closer, random casing / punctuation / emoji.
-       Includes search-friendly key terms (mobile shop, price, EMI, warranty, exchange, branch name). */
+       2-3 mixed points + closer, random casing / punctuation / emoji. */
     const pick = a => a[Math.floor(Math.random() * a.length)];
     const shuffle = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(v => v[1]);
     const PHONES = ['iPhone', 'Samsung', 'Vivo', 'Oppo', 'Realme', 'OnePlus', 'Redmi', 'new smartphone', 'naya phone'];
@@ -252,35 +331,108 @@
       return text;
     }
 
+    /* ============ TOAST ============ */
+    let toastTimer;
     function showToast(msg) {
       const t = document.getElementById('toast');
       t.textContent = msg; t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2500);
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
     }
 
-    function markDone(el) {
-      el.classList.add('done');
-      const title = el.querySelector('.btn-title');
-      if (!title.textContent.includes('✓')) {
-        title.textContent = '✓ ' + title.textContent;
-        el.querySelector('.status-icon').textContent = '✓';
+    /* ============ CLIPBOARD (modern API first, then fallback) ============ */
+    function legacyCopy(text) {
+      let ok = false;
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px;';
+      document.body.appendChild(ta);
+      try {
+        // iOS Safari needs contentEditable + explicit range selection
+        ta.contentEditable = 'true';
+        ta.readOnly = false;
+        const range = document.createRange();
+        range.selectNodeContents(ta);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        ta.setSelectionRange(0, text.length);
+        ta.focus();
+        ok = document.execCommand('copy');
+      } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      return ok;
+    }
+
+    function copyText(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+        return navigator.clipboard.writeText(text).then(() => true).catch(() => legacyCopy(text));
       }
+      return Promise.resolve(legacyCopy(text));
     }
 
-    function doReview(el) {
+    /* ============ REVIEW BUTTON ============
+       Copy -> toast -> SAME tab me Maps link (new tab nahi), taaki Google Maps app / logged-in
+       browser khule. Wapas aane pe progress saved milega. */
+    let pendingUrl = '';
+    function openMaps(url) { window.location.href = url; }
+
+    function doReview(ev) {
+      ev.preventDefault();
+      const el = ev.currentTarget;
       const select = document.getElementById('branch-select');
+      const url = select.value;
       const branchName = select.options[select.selectedIndex].text.replace('📍 ', '');
       const text = pickReview(branchName);
-      try {
-        const ta = document.createElement('textarea');
-        ta.value = text; document.body.appendChild(ta);
-        ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-        showToast('Review Text Copied!');
-      } catch (e) {}
-      markDone(el);
+      const manual = document.getElementById('manual');
+      manual.style.display = 'none';
+
+      copyText(text).then(ok => {
+        setDone(el, true);
+        if (ok) {
+          showToast('Review copy ho gaya! Maps me paste karo');
+          setTimeout(() => openMaps(url), 700);
+        } else {
+          pendingUrl = url;
+          const ta = document.getElementById('manual-text');
+          ta.value = text;
+          manual.style.display = 'flex';
+          ta.focus(); ta.select();
+          try { ta.setSelectionRange(0, text.length); } catch (e) {}
+          showToast('Copy nahi hua, text niche hai');
+        }
+      });
     }
 
-    function doAction(el) { markDone(el); }
+    window.addEventListener('DOMContentLoaded', () => {
+      renderSocial();
+
+      const select = document.getElementById('branch-select');
+      const reviewBtn = document.getElementById('btn-review');
+      select.addEventListener('change', e => { reviewBtn.href = e.target.value; });
+      const bp = (params.get('branch') || '').toLowerCase().trim();
+      if (bp) {
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].dataset.branch === bp || select.options[i].text.toLowerCase().includes(bp)) {
+            select.selectedIndex = i; reviewBtn.href = select.value; break;
+          }
+        }
+      }
+
+      reviewBtn.addEventListener('click', doReview);
+      document.getElementById('manual-go').addEventListener('click', () => openMaps(pendingUrl || select.value));
+      document.getElementById('reset-btn').addEventListener('click', () => {
+        doneState = {}; saveDone(doneState);
+        document.getElementById('manual').style.display = 'none';
+        restoreDone();
+        showToast('Progress reset ho gaya');
+      });
+
+      restoreDone();
+    });
+
+    // Back button se wapas aane par (bfcache) state refresh
+    window.addEventListener('pageshow', e => { if (e.persisted) { doneState = loadDone(); restoreDone(); } });
   </script>
 </body>
 </html>

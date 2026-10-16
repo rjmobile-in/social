@@ -84,7 +84,7 @@
   <div class="header">
     <img src="logo.png" alt="RJ Mobile" class="brand-logo" onerror="this.style.display='none'" />
     <h1>RJ Mobile <span>VIP Connect</span></h1>
-    <div class="subtitle">Select your branch & complete the setup</div>
+    <div class="subtitle">Select your branch and complete the steps below</div>
   </div>
 
   <div class="card">
@@ -93,15 +93,15 @@
       <div class="bar"><i id="prog-bar"></i></div>
     </div>
 
-    <select id="branch-select" class="branch-select" aria-label="Branch">
+    <select id="branch-select" class="branch-select" aria-label="Select branch">
       <option value="https://g.page/r/CRDRHW_oEFkqEBM/review" data-branch="jhotwara">📍 Jhotwara</option>
       <option value="https://g.page/r/CXJpKGVjH1_xEBM/review" data-branch="murlipura1">📍 Murlipura, 1 Number</option>
       <option value="https://g.page/r/CZbxO8pvx8u8EBM/review" data-branch="vki6">📍 VKI, 6 Number</option>
       <option value="https://g.page/r/CQOTwy2wHbcVEBM/review" data-branch="vki17">📍 VKI, 17 Number</option>
       <option value="https://search.google.com/local/writereview?placeid=ChIJ7wWKoB-zbTkRuoxnfdku9EQ" data-branch="vkilohamandi">📍 VKI, Lohamandi</option>
       <option value="https://g.page/r/CTZC43cDH7SuEBM/review" data-branch="shastrinagar">📍 Shastri Nagar</option>
-      <!-- TODO: Rajgarh ka REVIEW link yaha daalo (g.page/r/.../review ya writereview?placeid=...).
-           Abhi ka maps.app.goo.gl link sirf place page kholta h, seedha review box nahi. -->
+      <!-- TODO: Replace the Rajgarh value with its direct review link (g.page/r/.../review or writereview?placeid=...).
+           The current maps.app.goo.gl link opens the place page, not the review box. -->
       <option value="https://maps.app.goo.gl/Vxa5V371Q4f2Zvrn8" data-branch="rajgarh">📍 Rajgarh</option>
     </select>
 
@@ -110,16 +110,16 @@
         <div class="btn-icon icon-map"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
         <div class="btn-text-group">
           <span class="btn-title">Google Maps Review</span>
-          <span class="btn-subtitle">Auto-copy & Open location</span>
+          <span class="btn-subtitle">Review text is copied automatically</span>
         </div>
       </div>
       <span class="status-icon">➔</span>
     </a>
 
     <div id="manual">
-      <p>Auto-copy nahi ho paya. Neeche ka text dabake copy karo, fir "Maps kholo" dabao.</p>
+      <p>Automatic copy isn't available on this device. Press and hold the text below to copy it, then tap "Open Google Maps".</p>
       <textarea id="manual-text" readonly></textarea>
-      <button type="button" id="manual-go">Maps kholo</button>
+      <button type="button" id="manual-go">Open Google Maps</button>
     </div>
 
     <div class="divider"></div>
@@ -173,9 +173,9 @@
     let doneState = loadDone();
 
     /* ============ APP-FRIENDLY LINKS ============
-       Android: intent:// link seedha main app (Instagram / Facebook / WhatsApp) kholta h.
-       Agar wo app installed nahi (ya sirf Lite / Business h) to browser_fallback_url (normal web link) khulta h,
-       "install karo" wala page nahi aata. iPhone / desktop: normal https link. */
+       Android: an intent:// link opens the main app (Instagram / Facebook / WhatsApp) directly.
+       If that app isn't installed (e.g. only a Lite / Business version), the browser_fallback_url (web link) opens
+       instead of an install prompt. iPhone / desktop: regular https links. */
     const isAndroid = /Android/i.test(navigator.userAgent);
     function androidIntent(hostPath, pkg, fallback) {
       return 'intent://' + hostPath + '#Intent;scheme=https;package=' + pkg +
@@ -241,7 +241,7 @@
       saveDone(doneState);
       paintDone(el, on);
       const p = updateProgress();
-      if (on && p.total && p.n === p.total) showToast('Sab complete! Thank you 🎉');
+      if (on && p.total && p.n === p.total) showToast('All steps complete. Thank you! 🎉');
     }
 
     function restoreDone() {
@@ -372,8 +372,8 @@
     }
 
     /* ============ REVIEW BUTTON ============
-       Copy -> toast -> SAME tab me Maps link (new tab nahi), taaki Google Maps app / logged-in
-       browser khule. Wapas aane pe progress saved milega. */
+       Copy -> toast -> open the Maps link in the SAME tab (not a new tab) so the Google Maps app or the
+       logged-in browser handles it. Progress is saved for when the user returns. */
     let pendingUrl = '';
     function openMaps(url) { window.location.href = url; }
 
@@ -390,7 +390,7 @@
       copyText(text).then(ok => {
         setDone(el, true);
         if (ok) {
-          showToast('Review copy ho gaya! Maps me paste karo');
+          showToast('Review copied. Paste it on Google Maps.');
           setTimeout(() => openMaps(url), 700);
         } else {
           pendingUrl = url;
@@ -399,7 +399,7 @@
           manual.style.display = 'flex';
           ta.focus(); ta.select();
           try { ta.setSelectionRange(0, text.length); } catch (e) {}
-          showToast('Copy nahi hua, text niche hai');
+          showToast('Couldn't copy. Please copy the text below.');
         }
       });
     }
@@ -425,13 +425,13 @@
         doneState = {}; saveDone(doneState);
         document.getElementById('manual').style.display = 'none';
         restoreDone();
-        showToast('Progress reset ho gaya');
+        showToast('Progress has been reset');
       });
 
       restoreDone();
     });
 
-    // Back button se wapas aane par (bfcache) state refresh
+    // Refresh saved state when returning via the back button (bfcache)
     window.addEventListener('pageshow', e => { if (e.persisted) { doneState = loadDone(); restoreDone(); } });
   </script>
 </body>

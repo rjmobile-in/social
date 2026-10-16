@@ -4,117 +4,66 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RJ Mobile | VIP Connect</title>
-  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
-  
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    
     :root {
-      --bg-base: #050505; 
-      --card-bg: #121212; 
-      --card-border: #262626;
-      --btn-bg: #1a1a1a;
-      --btn-border: #333333;
-      --text-main: #ffffff; 
-      --text-soft: #a1a1aa;
-      --success: #10b981;
-      --success-alpha: rgba(16, 185, 129, 0.15);
-      --radius-md: 14px;
-      --radius-lg: 24px;
+      --bg-base: #050505; --card-bg: #121212; --card-border: #262626;
+      --btn-bg: #1a1a1a; --btn-border: #333333; --text-main: #ffffff; --text-soft: #a1a1aa;
+      --success: #10b981; --success-alpha: rgba(16, 185, 129, 0.15);
+      --radius-md: 14px; --radius-lg: 24px;
     }
-
     body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg-base);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex; flex-direction: column; align-items: center; 
+      font-family: 'Inter', sans-serif; background: var(--bg-base); color: var(--text-main);
+      min-height: 100vh; display: flex; flex-direction: column; align-items: center;
       padding: 35px 16px 50px;
     }
-
-    .header { width: 100%; max-width: 480px; text-align: center; margin-bottom: 28px; display: flex; flex-direction: column; align-items: center;}
-    
+    .header { width: 100%; max-width: 480px; text-align: center; margin-bottom: 28px; display: flex; flex-direction: column; align-items: center; }
     .brand-logo {
-      width: 72px; height: 72px; 
-      object-fit: contain; 
-      margin-bottom: 12px;
-      border-radius: 16px;
-      background: #1a1a1a;
-      padding: 8px;
-      border: 1px solid #333;
-      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
+      width: 72px; height: 72px; object-fit: contain; margin-bottom: 12px; border-radius: 16px;
+      background: #1a1a1a; padding: 8px; border: 1px solid #333; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
     }
-
-    h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 28px; margin: 0; letter-spacing: -0.5px;}
-    h1 span { 
-      background: linear-gradient(90deg, #d4af37, #f3e5ab); 
-      -webkit-background-clip: text; 
-      -webkit-text-fill-color: transparent; 
-    }
-    .subtitle { font-size: 14px; color: var(--text-soft); margin-top: 6px; font-weight: 500;}
-
+    h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 28px; letter-spacing: -0.5px; }
+    h1 span { background: linear-gradient(90deg, #d4af37, #f3e5ab); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .subtitle { font-size: 14px; color: var(--text-soft); margin-top: 6px; font-weight: 500; }
     .card {
-      background: var(--card-bg); 
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--card-border);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-      width: 100%; max-width: 480px; 
-      padding: 24px;
+      background: var(--card-bg); border-radius: var(--radius-lg); border: 1px solid var(--card-border);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); width: 100%; max-width: 480px; padding: 24px;
       display: flex; flex-direction: column; gap: 14px;
     }
-
     .branch-select {
-      width: 100%; padding: 16px; border-radius: var(--radius-md);
-      background: var(--btn-bg); color: var(--text-main);
-      border: 1px solid var(--btn-border); font-size: 15px; font-weight: 600;
-      font-family: inherit; outline: none; margin-bottom: 6px;
+      width: 100%; padding: 16px; border-radius: var(--radius-md); background: var(--btn-bg); color: var(--text-main);
+      border: 1px solid var(--btn-border); font-size: 15px; font-weight: 600; font-family: inherit; outline: none; margin-bottom: 6px;
       appearance: none;
       background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23a1a1aa%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
       background-repeat: no-repeat; background-position: right 16px center; background-size: 18px;
     }
-    
     a.action-btn {
-      text-decoration: none; 
-      font-family: inherit; background: var(--btn-bg); border: 1px solid var(--btn-border);
-      border-radius: var(--radius-md); padding: 14px 16px; width: 100%; 
-      cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+      text-decoration: none; color: inherit; font-family: inherit; background: var(--btn-bg); border: 1px solid var(--btn-border);
+      border-radius: var(--radius-md); padding: 14px 16px; width: 100%; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
       transition: all 0.2s ease; -webkit-tap-highlight-color: transparent;
     }
     a.action-btn:active { transform: scale(0.97); }
-    
-    .btn-content { display: flex; align-items: center; gap: 14px; }
-    .btn-icon {
-      width: 42px; height: 42px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; color: #fff;
-    }
+    .btn-content { display: flex; align-items: center; gap: 14px; min-width: 0; }
+    .btn-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #fff; }
     .btn-icon svg { width: 22px; height: 22px; fill: currentColor; }
-    
-    .icon-map   { background: #F5B400; } 
-    .icon-insta { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); } 
-    .icon-yt    { background: #FF0000; } 
-    .icon-fb    { background: #1877F2; } 
-    .icon-wa    { background: #25D366; } 
-    
-    .btn-text-group { text-align: left; display: flex; flex-direction: column; gap: 3px;}
-    .btn-title { font-size: 15px; font-weight: 700; color: var(--text-main); letter-spacing: 0.2px;}
-    .btn-subtitle { font-size: 12px; font-weight: 500; color: var(--text-soft);}
-    
-    .status-icon { color: var(--text-soft); font-weight: 600;}
-
+    .icon-map { background: #F5B400; }
+    .icon-insta { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+    .icon-yt { background: #FF0000; } .icon-fb { background: #1877F2; } .icon-wa { background: #25D366; }
+    .btn-text-group { text-align: left; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .btn-title { font-size: 15px; font-weight: 700; color: var(--text-main); letter-spacing: 0.2px; }
+    .btn-subtitle { font-size: 12px; font-weight: 500; color: var(--text-soft); }
+    .status-icon { color: var(--text-soft); font-weight: 600; padding-left: 8px; }
     a.action-btn.done { background: var(--success-alpha); border-color: var(--success); }
     a.action-btn.done .btn-title, a.action-btn.done .btn-subtitle, a.action-btn.done .status-icon { color: var(--success); }
     a.action-btn.done .btn-icon { background: var(--success); color: #fff; }
-
-    #toast { 
-      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); 
-      background: #ffffff; color: #000000; 
-      font-size: 14px; font-weight: 700; padding: 14px 24px; border-radius: 50px; 
-      opacity: 0; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; z-index: 100; 
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    #toast {
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: #ffffff; color: #000000; font-size: 14px; font-weight: 700; padding: 14px 24px; border-radius: 50px;
+      opacity: 0; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; z-index: 100; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .divider { height: 1px; background: var(--card-border); margin: 6px 0; }
@@ -129,7 +78,6 @@
   </div>
 
   <div class="card">
-    
     <select id="branch-select" class="branch-select">
       <option value="https://g.page/r/CRDRHW_oEFkqEBM/review" data-branch="jhotwara">📍 Jhotwara</option>
       <option value="https://g.page/r/CXJpKGVjH1_xEBM/review" data-branch="murlipura1">📍 Murlipura, 1 Number</option>
@@ -141,9 +89,7 @@
 
     <a id="btn-review" href="https://g.page/r/CRDRHW_oEFkqEBM/review" target="_blank" class="action-btn" onclick="doReview(this)">
       <div class="btn-content">
-        <div class="btn-icon icon-map">
-          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-        </div>
+        <div class="btn-icon icon-map"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
         <div class="btn-text-group">
           <span class="btn-title">Google Maps Review</span>
           <span class="btn-subtitle">Auto-copy & Open location</span>
@@ -153,166 +99,188 @@
     </a>
 
     <div class="divider"></div>
-
-    <a href="https://www.instagram.com/rjmobile.in/reels/" target="_blank" class="action-btn" onclick="doAction(this)">
-      <div class="btn-content">
-        <div class="btn-icon icon-insta">
-          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-        </div>
-        <div class="btn-text-group">
-          <span class="btn-title">Instagram (rjmobile.in)</span>
-          <span class="btn-subtitle">Follow + Like + Add to Story</span>
-        </div>
-      </div>
-      <span class="status-icon">➔</span>
-    </a>
-
-    <a href="https://www.instagram.com/rjmobile.jaipur/reels/" target="_blank" class="action-btn" onclick="doAction(this)">
-      <div class="btn-content">
-        <div class="btn-icon icon-insta">
-          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-        </div>
-        <div class="btn-text-group">
-          <span class="btn-title">Instagram (rjmobile.jaipur)</span>
-          <span class="btn-subtitle">Follow + Like + Add to Story</span>
-        </div>
-      </div>
-      <span class="status-icon">➔</span>
-    </a>
-
-    <a href="https://www.youtube.com/@rjmobileindia/shorts" target="_blank" class="action-btn" onclick="doAction(this)">
-      <div class="btn-content">
-        <div class="btn-icon icon-yt">
-          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        </div>
-        <div class="btn-text-group">
-          <span class="btn-title">YouTube</span>
-          <span class="btn-subtitle">Subscribe + Like</span>
-        </div>
-      </div>
-      <span class="status-icon">➔</span>
-    </a>
-
-    <a href="https://www.facebook.com/rjmobile.in/" target="_blank" class="action-btn" onclick="doAction(this)">
-      <div class="btn-content">
-        <div class="btn-icon icon-fb">
-          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-        </div>
-        <div class="btn-text-group">
-          <span class="btn-title">Facebook</span>
-          <span class="btn-subtitle">Follow + Like</span>
-        </div>
-      </div>
-      <span class="status-icon">➔</span>
-    </a>
-
-    <div class="divider"></div>
-
-    <a href="https://whatsapp.com/channel/0029VbCYXVB545v1l2Bme81S" target="_blank" class="action-btn" onclick="doAction(this)">
-      <div class="btn-content">
-        <div class="btn-icon icon-wa">
-          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.487-1.761-1.663-2.06-.177-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-        </div>
-        <div class="btn-text-group">
-          <span class="btn-title">WhatsApp Channel</span>
-          <span class="btn-subtitle">Join for updates & offers</span>
-        </div>
-      </div>
-      <span class="status-icon">➔</span>
-    </a>
-
+    <div id="social-list" style="display:contents"></div>
   </div>
 
   <div id="toast"></div>
 
   <script>
-    // --- URL PARAMETER & DROPDOWN LOGIC ---
-    window.addEventListener("DOMContentLoaded", () => {
-      const select = document.getElementById('branch-select');
-      const reviewBtn = document.getElementById('btn-review');
+    /* ============ ACCOUNTS ============
+       Main: "RJ Mobile" | City: "RJ Mobile - {City}"
+       Churu / Rajgarh handles are assumed - change if different. */
+    const MAIN = { name: 'RJ Mobile', ig: 'rjmobile.in', fb: 'rjmobile.in' };
+    const CITIES = [
+      { id: 'jaipur',  name: 'RJ Mobile - Jaipur',  ig: 'rjmobile.jaipur',  fb: 'rjmobile.jaipur' },
+      { id: 'churu',   name: 'RJ Mobile - Churu',   ig: 'rjmobile.churu',   fb: 'rjmobile.churu' },
+      { id: 'rajgarh', name: 'RJ Mobile - Rajgarh', ig: 'rjmobile.rajgarh', fb: 'rjmobile.rajgarh' }
+    ];
+    const YT_URL = 'https://www.youtube.com/@rjmobileindia/shorts';
+    const WA_URL = 'https://whatsapp.com/channel/0029VbCYXVB545v1l2Bme81S';
 
-      // Update link when drop-down is changed
-      select.addEventListener('change', (e) => {
-        reviewBtn.href = e.target.value;
-      });
-
-      try {
-        const urlParams = new URLSearchParams(window.location.search);
-        const branchParam = urlParams.get('branch');
-        if (branchParam) {
-          const searchBranch = branchParam.toLowerCase().trim();
-          for (let i = 0; i < select.options.length; i++) {
-            if (select.options[i].getAttribute('data-branch') === searchBranch || 
-                select.options[i].text.toLowerCase().includes(searchBranch)) {
-              select.selectedIndex = i;
-              reviewBtn.href = select.value;
-              break;
-            }
-          }
-        }
-      } catch(e) {}
-    });
-
-    const emojis = ['🔥','📱','😍','👍','🙌','⭐','😊','💯'];
-    const reviewsData = {
-      intros: ["rj mobile ki dukan ek number h","{loc} ki sabse top mobile shop","showroom mast saja rakha h in logo ne","best mobile shop h {loc} area me","yaha aake alag hi maza aata h","bhaiya ki shop kafi badiya h"],
-      middles: ["staff bahut polite h","customer service ekdam zordar lgi","bhaiya ne sab kuch pyar se samjhaya","purane phone ka data copy kar diya easily","team kafi friendly h yaha ki","sab log ache se baat karte h"],
-      pricing: ["deals sabse best milti h idhar","rate market me sabse saste h","online se bhi kam price me pad gya","exchange value achi lagayi bhaiya ne","emi aasan h aur jaldi ho gyi","budget me badiya phone dila diya"],
-      endings: ["sath me free cover glass bhi de diya","gifts dene me kanjoosi ni karte","earphones bhi free me diye","mujhe kafi extra saman de diya sath","bina mange hi free accessories laga di"],
-      bonuses: ["sbko 100% recommend karunga","jarur aana bhai logo yaha","mai to hamesha yahi se lunga ab","ekdam paisa vasool jagah h","phone lene ke liye sabse best shop h"]
+    const ICONS = {
+      ig: '<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>',
+      yt: '<path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>',
+      fb: '<path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>',
+      wa: '<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.487-1.761-1.663-2.06-.177-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>'
     };
 
+    /* ============ URL PARAMS ============
+       ?city=all            -> main + every city
+       ?city=jaipur         -> main + Jaipur
+       ?city=jaipur,churu   -> main + Jaipur + Churu  (comma / space / | all work)
+       (no city)            -> main only
+       ?branch=vki6         -> preselect review branch */
+    const params = new URLSearchParams(window.location.search);
+    const cityList = (params.get('city') || '').toLowerCase().split(/[,\s|]+/).filter(Boolean);
+    const showAll = cityList.includes('all');
+    const activeCities = showAll ? CITIES : CITIES.filter(c => cityList.includes(c.id));
+    const accounts = [MAIN, ...activeCities];
+
+    function btn(platform, href, title, sub) {
+      return `<a href="${href}" target="_blank" rel="noopener" class="action-btn" onclick="doAction(this)">
+        <div class="btn-content">
+          <div class="btn-icon icon-${platform === 'ig' ? 'insta' : platform}"><svg viewBox="0 0 24 24">${ICONS[platform]}</svg></div>
+          <div class="btn-text-group"><span class="btn-title">${title}</span><span class="btn-subtitle">${sub}</span></div>
+        </div><span class="status-icon">➔</span></a>`;
+    }
+
+    function renderSocial() {
+      let h = '';
+      accounts.forEach(a => h += btn('ig', `https://www.instagram.com/${a.ig}/reels/`, `Instagram · ${a.name}`, `@${a.ig} · Follow + Like + Add to Story`));
+      h += btn('yt', YT_URL, 'YouTube', 'Subscribe + Like');
+      accounts.forEach(a => h += btn('fb', `https://www.facebook.com/${a.fb}/`, `Facebook · ${a.name}`, 'Follow + Like'));
+      h += '<div class="divider"></div>';
+      h += btn('wa', WA_URL, 'WhatsApp Channel', 'Join for updates & offers');
+      document.getElementById('social-list').innerHTML = h;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderSocial();
+      const select = document.getElementById('branch-select');
+      const reviewBtn = document.getElementById('btn-review');
+      select.addEventListener('change', e => { reviewBtn.href = e.target.value; });
+      const bp = (params.get('branch') || '').toLowerCase().trim();
+      if (bp) {
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].dataset.branch === bp || select.options[i].text.toLowerCase().includes(bp)) {
+            select.selectedIndex = i; reviewBtn.href = select.value; break;
+          }
+        }
+      }
+    });
+
+    /* ============ REVIEW GENERATOR ============
+       Builds a different, natural Hinglish review each tap: random opener +
+       2-3 mixed points + closer, random casing / punctuation / emoji.
+       Includes search-friendly key terms (mobile shop, price, EMI, warranty, exchange, branch name). */
+    const pick = a => a[Math.floor(Math.random() * a.length)];
+    const shuffle = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(v => v[1]);
+    const PHONES = ['iPhone', 'Samsung', 'Vivo', 'Oppo', 'Realme', 'OnePlus', 'Redmi', 'new smartphone', 'naya phone'];
+    const EMOJI = ['👍', '🔥', '📱', '😊', '🙌', '💯', '⭐', '👌'];
+
+    const R = {
+      openers: [
+        "{loc} me naya {phone} lena tha, dost ke bolne pe RJ Mobile gaya",
+        "RJ Mobile {loc} se {phone} liya last week",
+        "kaafi time se mobile shop dhund raha tha {loc} me, yaha aake mil gayi",
+        "phone upgrade karna tha to RJ Mobile {loc} visit kiya",
+        "best mobile shop in {loc}, seriously",
+        "{loc} ka RJ Mobile showroom try kiya, experience achha raha",
+        "pehle online dekh raha tha {phone}, fir RJ Mobile {loc} aaya",
+        "Visited RJ Mobile {loc} to buy a {phone}"
+      ],
+      staff: [
+        "staff ne saare models ache se dikhaye, koi pressure nahi diya",
+        "bhaiya ne features samjhaye aur mere budget ke hisab se hi phone suggest kiya",
+        "sab log politely baat karte h aur doubts clear karte h",
+        "purane phone ka data bhi transfer kar diya, kuch tension nhi hui",
+        "staff helpful h, jitni baar puch lo tab bhi smile ke sath bata dete h",
+        "customer service achhi lagi, jaldi kaam ho gya"
+      ],
+      price: [
+        "price market se kam laga aur pakka GST bill mila",
+        "exchange me purane phone ki sahi value mili",
+        "EMI process easy tha, zyada paperwork nhi",
+        "original product mila, full warranty ke sath",
+        "best price mila, dusri shops se compare karke dekha tha",
+        "offer aur discount bhi achha mila, paisa vasool"
+      ],
+      extra: [
+        "cover aur tempered glass bhi laga ke diya",
+        "showroom saaf suthra h aur saare latest models available h",
+        "billing aur setup ek hi jagah ho gya",
+        "service ke baad bhi follow up karte h"
+      ],
+      closers: [
+        "recommend karunga",
+        "next time bhi yahi se lunga",
+        "family ko bhi yahi bhejunga",
+        "agar {phone} lena ho to ek baar zarur jao",
+        "5 star deserve karte h",
+        "thanks RJ Mobile team"
+      ],
+      whole: [
+        "Great experience at RJ Mobile {loc}. Genuine products, fair price and very helpful staff.",
+        "Genuine {phone}, best price and easy EMI. Staff at RJ Mobile {loc} was really polite. Recommended.",
+        "Bahut badiya mobile shop h {loc} me. Price sahi, warranty original aur staff ka behaviour mast.",
+        "RJ Mobile {loc} - trusted shop. Exchange aur EMI dono ki facility mili, kaam jaldi ho gya."
+      ]
+    };
+
+    let lastReview = '';
     function pickReview(branchName) {
       const loc = branchName.split(',')[0].trim();
-      let intro = reviewsData.intros[Math.floor(Math.random() * reviewsData.intros.length)].replace(/\{loc\}/g, loc);
-      let mid = reviewsData.middles[Math.floor(Math.random() * reviewsData.middles.length)];
-      let price = reviewsData.pricing[Math.floor(Math.random() * reviewsData.pricing.length)];
-      let end = reviewsData.endings[Math.floor(Math.random() * reviewsData.endings.length)];
-      let bonus = reviewsData.bonuses[Math.floor(Math.random() * reviewsData.bonuses.length)];
-      return [intro, mid, price, end, bonus].join(" ").toLowerCase() + " " + emojis[Math.floor(Math.random()*emojis.length)] + emojis[Math.floor(Math.random()*emojis.length)];
+      const phone = pick(PHONES);
+      let text;
+      if (Math.random() < 0.2) {
+        text = pick(R.whole);
+      } else {
+        const middle = shuffle([pick(R.staff), pick(R.price), pick(R.extra)]).slice(0, Math.random() < 0.5 ? 2 : 3);
+        const parts = [pick(R.openers), ...middle, pick(R.closers)];
+        const sep = Math.random() < 0.6 ? '. ' : ', ';
+        text = parts.join(sep);
+        if (Math.random() < 0.4) text = text.replace(/, /g, '. ');
+      }
+      text = text.replace(/\{loc\}/g, loc).replace(/\{phone\}/g, phone);
+      if (Math.random() < 0.3) text = text.toLowerCase().replace(/rj mobile/g, 'RJ Mobile');
+      if (Math.random() < 0.45) text = text.replace(/\.$/, '');
+      else if (!/[.!]$/.test(text)) text += '.';
+      const n = Math.random() < 0.3 ? 0 : (Math.random() < 0.6 ? 1 : 2);
+      if (n) text += ' ' + shuffle(EMOJI).slice(0, n).join('');
+      if (text === lastReview) return pickReview(branchName);
+      lastReview = text;
+      return text;
     }
 
     function showToast(msg) {
       const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
+      t.textContent = msg; t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 2500);
     }
 
-    function markDone(btn) {
-      btn.classList.add('done');
-      const titleSpan = btn.querySelector('.btn-title');
-      if(!titleSpan.innerHTML.includes('✓')) {
-        titleSpan.innerHTML = '✓ ' + titleSpan.innerHTML;
-        btn.querySelector('.status-icon').textContent = '✓';
+    function markDone(el) {
+      el.classList.add('done');
+      const title = el.querySelector('.btn-title');
+      if (!title.textContent.includes('✓')) {
+        title.textContent = '✓ ' + title.textContent;
+        el.querySelector('.status-icon').textContent = '✓';
       }
     }
 
-    // --- BUTTON CLICK HANDLERS ---
-    function doReview(element) {
+    function doReview(el) {
       const select = document.getElementById('branch-select');
       const branchName = select.options[select.selectedIndex].text.replace('📍 ', '');
-      
       const text = pickReview(branchName);
-      
-      // Text Copy karna
       try {
         const ta = document.createElement('textarea');
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select(); document.execCommand('copy');
-        document.body.removeChild(ta);
+        ta.value = text; document.body.appendChild(ta);
+        ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
         showToast('Review Text Copied!');
-      } catch(e) {}
-      
-      markDone(element);
-      // NOTE: Link opening is natively handled by the <a href="..." target="_blank"> tag.
+      } catch (e) {}
+      markDone(el);
     }
 
-    function doAction(element) {
-      markDone(element);
-      // NOTE: Link opening is natively handled by the <a href="..." target="_blank"> tag.
-    }
+    function doAction(el) { markDone(el); }
   </script>
 </body>
 </html>

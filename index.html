@@ -200,12 +200,12 @@
         h += btn('ig:' + a.id, 'ig', web, androidIntent('instagram.com/_u/' + a.ig, 'com.instagram.android', web),
                  `Instagram · ${a.name}`, `@${a.ig} · Follow + Like + Add to Story`);
       });
-      h += btn('yt', 'yt', YT_URL, null, 'YouTube', 'Subscribe + Like');
       accounts.forEach(a => {
         const web = `https://www.facebook.com/${a.fb}/`;
         h += btn('fb:' + a.id, 'fb', web, androidIntent('www.facebook.com/' + a.fb, 'com.facebook.katana', web),
                  `Facebook · ${a.name}`, 'Follow + Like');
       });
+      h += btn('yt', 'yt', YT_URL, null, 'YouTube', 'Subscribe + Like');
       h += '<div class="divider"></div>';
       h += btn('wa', 'wa', WA_URL, androidIntent('whatsapp.com/channel/0029VbCYXVB545v1l2Bme81S', 'com.whatsapp', WA_URL),
                'WhatsApp Channel', 'Join for updates & offers');

@@ -76,6 +76,12 @@
     #manual { display: none; flex-direction: column; gap: 10px; background: var(--btn-bg); border: 1px solid var(--btn-border); border-radius: var(--radius-md); padding: 14px; }
     #manual p { font-size: 12px; color: var(--text-soft); line-height: 1.5; }
     #manual textarea { width: 100%; min-height: 96px; background: #0d0d0d; color: var(--text-main); border: 1px solid var(--btn-border); border-radius: 10px; padding: 10px; font: inherit; font-size: 16px; resize: none; }
+    .branch-select option, .branch-select optgroup { background: #1a1a1a; color: #ffffff; }
+    .branch-select option:disabled { color: #71717a; }
+    .branch-single { display: none; padding: 14px 16px; border-radius: var(--radius-md); background: var(--btn-bg); border: 1px solid var(--btn-border); font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .soon-card { display: none; padding: 16px; border-radius: var(--radius-md); background: var(--btn-bg); border: 1px dashed var(--btn-border); text-align: center; }
+    .soon-card strong { display: block; font-size: 15px; margin-bottom: 4px; }
+    .soon-card span { font-size: 12px; color: var(--text-soft); line-height: 1.5; }
     #manual button { background: #F5B400; color: #000; border: 0; border-radius: 10px; padding: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
   </style>
 </head>
@@ -93,17 +99,11 @@
       <div class="bar"><i id="prog-bar"></i></div>
     </div>
 
-    <select id="branch-select" class="branch-select" aria-label="Select branch">
-      <option value="https://g.page/r/CRDRHW_oEFkqEBM/review" data-branch="jhotwara">📍 Jhotwara</option>
-      <option value="https://g.page/r/CXJpKGVjH1_xEBM/review" data-branch="murlipura1">📍 Murlipura, 1 Number</option>
-      <option value="https://g.page/r/CZbxO8pvx8u8EBM/review" data-branch="vki6">📍 VKI, 6 Number</option>
-      <option value="https://g.page/r/CQOTwy2wHbcVEBM/review" data-branch="vki17">📍 VKI, 17 Number</option>
-      <option value="https://search.google.com/local/writereview?placeid=ChIJ7wWKoB-zbTkRuoxnfdku9EQ" data-branch="vkilohamandi">📍 VKI, Lohamandi</option>
-      <option value="https://g.page/r/CTZC43cDH7SuEBM/review" data-branch="shastrinagar">📍 Shastri Nagar</option>
-      <option value="https://g.page/r/CVu708z0OM1PEBM/review" data-branch="rajgarh">📍 Rajgarh</option>
-    </select>
+    <select id="branch-select" class="branch-select" aria-label="Select branch"></select>
+    <div id="branch-single" class="branch-single"></div>
+    <div id="soon" class="soon-card"></div>
 
-    <a id="btn-review" data-key="review" data-title="Google Maps Review" href="https://g.page/r/CRDRHW_oEFkqEBM/review" class="action-btn">
+    <a id="btn-review" data-key="review" data-title="Google Maps Review" href="#" class="action-btn">
       <div class="btn-content">
         <div class="btn-icon icon-map"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
         <div class="btn-text-group">
@@ -153,7 +153,10 @@
        ?city=jaipur         -> main + Jaipur
        ?city=jaipur,churu   -> main + Jaipur + Churu  (comma / space / | all work)
        (no city)            -> main only
-       ?branch=vki6         -> preselect review branch */
+       ?branch=vki6         -> preselect review branch
+       ?branch=jaipur       -> same as ?city=jaipur for the review branch list
+       The review branch list follows the city: ?city=jaipur shows only Jaipur branches,
+       ?city=rajgarh only Sadalpur, no city / ?city=all shows every branch. */
     const params = new URLSearchParams(window.location.search);
     const cityList = (params.get('city') || '').toLowerCase().split(/[,\s|]+/).filter(Boolean);
     const showAll = cityList.includes('all');
@@ -247,86 +250,232 @@
       updateProgress();
     }
 
+    /* ============ BRANCHES ============
+       Paste the DCM Google review link below. Until then DCM stays out of the list.
+       Add a link-less city/branch to UPCOMING to show it as "Coming soon". */
+    const DCM_REVIEW_URL = '';
+
+    const BRANCH_CITIES = { jaipur: 'Jaipur', rajgarh: 'Rajgarh', churu: 'Churu' };
+    const BRANCHES = [
+      { id: 'dcm',          city: 'jaipur',  name: 'DCM',            url: DCM_REVIEW_URL, alias: [] },
+      { id: 'jhotwara',     city: 'jaipur',  name: 'Jhotwara',       url: 'https://g.page/r/CRDRHW_oEFkqEBM/review', alias: [] },
+      { id: 'murlipura',    city: 'jaipur',  name: 'Murlipura',      url: 'https://g.page/r/CXJpKGVjH1_xEBM/review', alias: ['murlipura1'] },
+      { id: 'shastrinagar', city: 'jaipur',  name: 'Shastri Nagar',  url: 'https://g.page/r/CTZC43cDH7SuEBM/review', alias: [] },
+      { id: 'lohamandi',    city: 'jaipur',  name: 'Loha Mandi',     url: 'https://search.google.com/local/writereview?placeid=ChIJ7wWKoB-zbTkRuoxnfdku9EQ', alias: ['vkilohamandi'] },
+      { id: 'vki6',         city: 'jaipur',  name: 'VKI, Road 6',    url: 'https://g.page/r/CZbxO8pvx8u8EBM/review', alias: [] },
+      { id: 'vki17',        city: 'jaipur',  name: 'VKI, Road 17',   url: 'https://g.page/r/CQOTwy2wHbcVEBM/review', alias: [] },
+      { id: 'sadalpur',     city: 'rajgarh', name: 'Sadalpur',       url: 'https://g.page/r/CVu708z0OM1PEBM/review', alias: ['rajgarh'] }
+    ];
+    const UPCOMING = [
+      { city: 'jaipur', name: 'Raja Park' },
+      { city: 'churu',  name: 'Churu' }
+    ];
+
     /* ============ REVIEW GENERATOR ============
-       Builds a different, natural Hinglish review each tap: random opener +
-       2-3 mixed points + closer, random casing / punctuation / emoji. */
+       Each tap builds a different natural Hinglish review:
+       visit reason (phone / accessories / repair) + 1-3 specific points + closer.
+       Occasionally (not every time) it adds how the customer found the shop,
+       and in some reviews ONE light keyword line (service + area + city + brand).
+       Recent reviews are remembered so the same text never repeats. */
     const pick = a => a[Math.floor(Math.random() * a.length)];
     const shuffle = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(v => v[1]);
     const PHONES = ['iPhone', 'Samsung', 'Vivo', 'Oppo', 'Realme', 'OnePlus', 'Redmi', 'new smartphone', 'naya phone'];
+    const ACCESSORIES = ['cover', 'tempered glass', 'charger', 'earbuds', 'power bank', 'cable'];
     const EMOJI = ['👍', '🔥', '📱', '😊', '🙌', '💯', '⭐', '👌'];
 
-    const R = {
-      openers: [
-        "{loc} me naya {phone} lena tha, dost ke bolne pe RJ Mobile gaya",
-        "RJ Mobile {loc} se {phone} liya last week",
-        "kaafi time se mobile shop dhund raha tha {loc} me, yaha aake mil gayi",
-        "phone upgrade karna tha to RJ Mobile {loc} visit kiya",
-        "best mobile shop in {loc}, seriously",
-        "{loc} ka RJ Mobile showroom try kiya, experience achha raha",
-        "pehle online dekh raha tha {phone}, fir RJ Mobile {loc} aaya",
-        "Visited RJ Mobile {loc} to buy a {phone}"
-      ],
-      staff: [
-        "staff ne saare models ache se dikhaye, koi pressure nahi diya",
-        "bhaiya ne features samjhaye aur mere budget ke hisab se hi phone suggest kiya",
-        "sab log politely baat karte h aur doubts clear karte h",
-        "purane phone ka data bhi transfer kar diya, kuch tension nhi hui",
-        "staff helpful h, jitni baar puch lo tab bhi smile ke sath bata dete h",
-        "customer service achhi lagi, jaldi kaam ho gya"
-      ],
-      price: [
-        "price market se kam laga aur pakka GST bill mila",
-        "exchange me purane phone ki sahi value mili",
-        "EMI process easy tha, zyada paperwork nhi",
-        "original product mila, full warranty ke sath",
-        "best price mila, dusri shops se compare karke dekha tha",
-        "offer aur discount bhi achha mila, paisa vasool"
-      ],
-      extra: [
-        "cover aur tempered glass bhi laga ke diya",
-        "showroom saaf suthra h aur saare latest models available h",
-        "billing aur setup ek hi jagah ho gya",
-        "service ke baad bhi follow up karte h"
-      ],
-      closers: [
-        "recommend karunga",
-        "next time bhi yahi se lunga",
-        "family ko bhi yahi bhejunga",
-        "agar {phone} lena ho to ek baar zarur jao",
-        "5 star deserve karte h",
-        "thanks RJ Mobile team"
-      ],
-      whole: [
-        "Great experience at RJ Mobile {loc}. Genuine products, fair price and very helpful staff.",
-        "Genuine {phone}, best price and easy EMI. Staff at RJ Mobile {loc} was really polite. Recommended.",
-        "Bahut badiya mobile shop h {loc} me. Price sahi, warranty original aur staff ka behaviour mast.",
-        "RJ Mobile {loc} - trusted shop. Exchange aur EMI dono ki facility mili, kaam jaldi ho gya."
-      ]
-    };
+    const SOURCE_CHANCE = 0.15;   // how often "how I found the shop" is mentioned
+    const KEYWORD_CHANCE = 0.4;   // how often a keyword line is added
 
-    let lastReview = '';
-    function pickReview(branchName) {
-      const loc = branchName.split(',')[0].trim();
-      const phone = pick(PHONES);
-      let text;
-      if (Math.random() < 0.2) {
-        text = pick(R.whole);
-      } else {
-        const middle = shuffle([pick(R.staff), pick(R.price), pick(R.extra)]).slice(0, Math.random() < 0.5 ? 2 : 3);
-        const parts = [pick(R.openers), ...middle, pick(R.closers)];
-        const sep = Math.random() < 0.6 ? '. ' : ', ';
-        text = parts.join(sep);
-        if (Math.random() < 0.4) text = text.replace(/, /g, '. ');
+    // Why the customer came (weights: phone 4, accessories 2, repair 2)
+    const SCENARIOS = [
+      { w: 4, kw: ['mobile shop', 'mobile showroom', 'mobile phone store'],
+        openers: [
+          "{place} me naya {phone} lena tha, RJ Mobile se liya",
+          "phone upgrade karna tha to RJ Mobile {area} visit kiya",
+          "pehle online dekh raha tha {phone}, fir RJ Mobile {area} aaya",
+          "Visited RJ Mobile {area} to buy a {phone}",
+          "RJ Mobile {area} se {phone} liya last week",
+          "dost ke bolne pe RJ Mobile {area} gaya {phone} lene"
+        ],
+        points: [
+          "staff ne saare models ache se dikhaye, koi pressure nahi diya",
+          "bhaiya ne features samjhaye aur budget ke hisab se hi phone suggest kiya",
+          "purane phone ka data bhi transfer kar diya",
+          "price market se kam laga aur pakka GST bill mila",
+          "exchange me purane phone ki sahi value mili",
+          "EMI process easy tha, zyada paperwork nhi",
+          "original product mila, full warranty ke sath",
+          "showroom saaf suthra h aur latest models available h",
+          "customer service achhi lagi, jaldi kaam ho gya"
+        ] },
+      { w: 2, kw: ['mobile accessories shop', 'mobile accessories store'],
+        openers: [
+          "{accessory} lene gaya tha RJ Mobile {area}",
+          "phone ke liye {accessory} chahiye tha, RJ Mobile {area} se liya",
+          "Bought a {accessory} from RJ Mobile {area}",
+          "{area} me accessories ke liye RJ Mobile try kiya"
+        ],
+        points: [
+          "bahut saari variety mili, sab brands ke accessories ek hi jagah",
+          "quality original lagi aur rate reasonable the",
+          "staff ne mere phone model ke hisab se sahi fit diya",
+          "tempered glass bhi achhe se laga diya",
+          "bhaiya ne honestly bataya konsa lena chahiye aur konsa nahi",
+          "market se sahi daam me mil gaya"
+        ] },
+      { w: 2, kw: ['mobile repair shop', 'mobile repairing center', 'mobile repair service'],
+        openers: [
+          "phone ki screen toot gayi thi, RJ Mobile {area} me repair karwayi",
+          "mera phone repair karwana tha, RJ Mobile {area} gaya",
+          "battery ki problem thi, RJ Mobile {area} pe dikhaya",
+          "Got my phone repaired at RJ Mobile {area}"
+        ],
+        points: [
+          "pehle problem check ki fir honest price bataya",
+          "repair jaldi ho gaya, time pe phone mil gaya",
+          "genuine parts use kiye aur warranty bhi mili",
+          "data safe raha, koi tension nhi hui",
+          "phone ab bilkul new jaisa chal raha h",
+          "bina wajah ka extra kharcha nahi karwaya"
+        ] }
+    ];
+
+    // How the customer found the shop (rare)
+    const SOURCES = [
+      "Instagram pe RJ Mobile ki reel dekhi thi",
+      "YouTube shorts me RJ Mobile dekha tha",
+      "Facebook reel dekh ke aaya",
+      "ek dost ne refer kiya tha",
+      "bhai ke recommend karne pe gaya"
+    ];
+
+    // Keyword line: service + place + brand
+    const KW_LINES = [
+      "best {kw} in {place} - RJ Mobile",
+      "RJ Mobile is a trusted {kw} in {place}",
+      "{kw} in {place} dhundh rahe ho to RJ Mobile try karo",
+      "ek number {kw} in {place}, RJ Mobile"
+    ];
+
+    const CLOSERS = [
+      "recommend karunga",
+      "next time bhi yahi se lunga",
+      "family ko bhi yahi bhejunga",
+      "5 star deserve karte h",
+      "thanks RJ Mobile team",
+      "keep it up"
+    ];
+
+    const recentReviews = [];
+    function weightedScenario() {
+      let r = Math.random() * SCENARIOS.reduce((s, x) => s + x.w, 0);
+      for (const s of SCENARIOS) { if ((r -= s.w) < 0) return s; }
+      return SCENARIOS[0];
+    }
+
+    function buildReview(branchName) {
+      const branch = BRANCHES.find(b => b.name === branchName);
+      const area = branchName.split(',')[0].trim();
+      const city = branch ? BRANCH_CITIES[branch.city] : '';
+      const place = (city && city !== area && Math.random() < 0.75) ? area + ', ' + city : area;
+      const ctx = { area, city, place, phone: pick(PHONES), accessory: pick(ACCESSORIES) };
+
+      const s = weightedScenario();
+      const parts = [];
+      if (Math.random() < SOURCE_CHANCE) parts.push(pick(SOURCES));
+      parts.push(pick(s.openers));
+      const openerIdx = parts.length - 1;
+
+      // Sometimes a short review (no detail points), otherwise 2-3 points
+      if (Math.random() >= 0.2) parts.push(...shuffle(s.points).slice(0, Math.random() < 0.55 ? 2 : 3));
+
+      // One light keyword line, right after the opener or at the end
+      if (Math.random() < KEYWORD_CHANCE) {
+        const kwLine = pick(KW_LINES).replace('{kw}', pick(s.kw));
+        parts.splice(Math.random() < 0.5 ? openerIdx + 1 : parts.length, 0, kwLine);
       }
-      text = text.replace(/\{loc\}/g, loc).replace(/\{phone\}/g, phone);
-      if (Math.random() < 0.3) text = text.toLowerCase().replace(/rj mobile/g, 'RJ Mobile');
-      if (Math.random() < 0.45) text = text.replace(/\.$/, '');
-      else if (!/[.!]$/.test(text)) text += '.';
+      parts.push(pick(CLOSERS));
+
+      let text = parts.join(Math.random() < 0.6 ? '. ' : ', ');
+      text = text.replace(/\{(\w+)\}/g, (m, k) => ctx[k] || '');
+      if (Math.random() < 0.5) text = text.charAt(0).toUpperCase() + text.slice(1);
+      text = Math.random() < 0.45 ? text.replace(/\.$/, '') : (/[.!]$/.test(text) ? text : text + '.');
       const n = Math.random() < 0.3 ? 0 : (Math.random() < 0.6 ? 1 : 2);
       if (n) text += ' ' + shuffle(EMOJI).slice(0, n).join('');
-      if (text === lastReview) return pickReview(branchName);
-      lastReview = text;
       return text;
+    }
+
+    function pickReview(branchName) {
+      let text = '';
+      for (let i = 0; i < 15; i++) {
+        text = buildReview(branchName);
+        if (!recentReviews.includes(text)) break;
+      }
+      recentReviews.push(text);
+      if (recentReviews.length > 25) recentReviews.shift();
+      return text;
+    }
+
+    const norm = v => String(v || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+    // Fills the branch dropdown for the current ?city= / ?branch= and returns false when there is no branch to review yet.
+    function renderBranches() {
+      const select = document.getElementById('branch-select');
+      const single = document.getElementById('branch-single');
+      const soonBox = document.getElementById('soon');
+      const bpn = norm(params.get('branch'));
+
+      let cities = cityList.filter(c => BRANCH_CITIES[c]);
+      if (!cities.length && BRANCH_CITIES[bpn]) cities = [bpn];
+      const inScope = c => !cities.length || cities.includes(c);
+
+      const list = BRANCHES.filter(b => b.url && inScope(b.city));
+      const soon = UPCOMING.filter(u => inScope(u.city));
+
+      if (!list.length) {
+        select.style.display = 'none';
+        document.getElementById('btn-review').remove();
+        soonBox.innerHTML = '<strong>' + (soon.length ? soon.map(u => u.name).join(', ') + ' branch coming soon' : 'Branches coming soon') + '</strong>' +
+                            '<span>Reviews will open here once the branch is live. You can follow us on social media meanwhile.</span>';
+        soonBox.style.display = 'block';
+        return false;
+      }
+
+      const makeOpt = (text, value, id, disabled) => {
+        const o = document.createElement('option');
+        o.textContent = '📍 ' + text;
+        if (value) o.value = value;
+        if (id) o.dataset.branch = id;
+        if (disabled) o.disabled = true;
+        return o;
+      };
+
+      const cityKeys = Object.keys(BRANCH_CITIES).filter(k => list.some(b => b.city === k) || soon.some(u => u.city === k));
+      cityKeys.forEach(k => {
+        const parent = cityKeys.length > 1 ? Object.assign(document.createElement('optgroup'), { label: BRANCH_CITIES[k] }) : select;
+        list.filter(b => b.city === k).forEach(b => parent.appendChild(makeOpt(b.name, b.url, b.id, false)));
+        soon.filter(u => u.city === k).forEach(u => parent.appendChild(makeOpt(u.name + ' (Coming soon)', '', '', true)));
+        if (parent !== select) select.appendChild(parent);
+      });
+
+      // Preselect from ?branch= (id, old alias, or part of the name)
+      if (bpn && !BRANCH_CITIES[bpn]) {
+        const hit = list.find(b => norm(b.id) === bpn || b.alias.some(a => norm(a) === bpn) || norm(b.name) === bpn) ||
+                    (bpn.length >= 3 ? list.find(b => norm(b.name).includes(bpn)) : null);
+        if (hit) select.value = hit.url;
+      }
+      if (select.selectedIndex < 0 || select.options[select.selectedIndex].disabled) {
+        const first = Array.from(select.options).findIndex(o => !o.disabled);
+        select.selectedIndex = first;
+      }
+
+      // Only one branch to choose from: show it as a label instead of a dropdown
+      if (list.length === 1 && !soon.length) {
+        single.textContent = '📍 ' + list[0].name;
+        single.style.display = 'block';
+        select.style.display = 'none';
+      }
+      return true;
     }
 
     /* ============ TOAST ============ */
@@ -407,17 +556,11 @@
 
       const select = document.getElementById('branch-select');
       const reviewBtn = document.getElementById('btn-review');
-      select.addEventListener('change', e => { reviewBtn.href = e.target.value; });
-      const bp = (params.get('branch') || '').toLowerCase().trim();
-      if (bp) {
-        for (let i = 0; i < select.options.length; i++) {
-          if (select.options[i].dataset.branch === bp || select.options[i].text.toLowerCase().includes(bp)) {
-            select.selectedIndex = i; reviewBtn.href = select.value; break;
-          }
-        }
+      if (renderBranches()) {
+        reviewBtn.href = select.value;
+        select.addEventListener('change', e => { reviewBtn.href = e.target.value; });
+        reviewBtn.addEventListener('click', doReview);
       }
-
-      reviewBtn.addEventListener('click', doReview);
       document.getElementById('manual-go').addEventListener('click', () => openMaps(pendingUrl || select.value));
       document.getElementById('reset-btn').addEventListener('click', () => {
         doneState = {}; saveDone(doneState);
